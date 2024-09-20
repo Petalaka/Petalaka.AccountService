@@ -3,7 +3,7 @@
 namespace Petalaka.Account.API.Base;
 
 [ApiController]
-[Route("account-service/api/[controller]")]
+[Route("api/[controller]")]
 public class BaseController : ControllerBase
 {
     
