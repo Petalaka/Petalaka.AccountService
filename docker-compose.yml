@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  petalaka.account.api:
+    image: ${DOCKER_REGISTRY-}petalakaaccountapi
+    build:
+      context: .
+      dockerfile: Petalaka.Account.API/Dockerfile
+    environment:
+      - SERVICE_PORT=8080
+    networks:
+      - petalaka-accountservice-network
+    depends_on: 
+      - petalaka.account.sqlserver
+
+  petalaka.account.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "StrongDatabasePassword!@#123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    networks:
+      - petalaka-accountservice-network
+    volumes:
+      - petalaka-account-sqlserver:/var/opt/mssql
+
+networks:
+     petalaka-accountservice-network: 
+        driver: bridge
+volumes:
+  petalaka-account-sqlserver:

@@ -1,0 +1,6 @@
+@Petalaka.Account.API_HostAddress = http://localhost:5288
+
+GET {{Petalaka.Account.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
