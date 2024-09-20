@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,7 @@ namespace Petalaka.Account.Repository;
 
 public static class ConfigureService
 {
-    public static void AddConfigureServiceRepository(this IServiceCollection services, IConfiguration configuration)
+    public static async void AddConfigureServiceRepository(this IServiceCollection services, IConfiguration configuration)
     {
         /*services.ConfigSwagger();
         services.AddAuthenJwt(configuration);
@@ -48,5 +49,12 @@ public static class ConfigureService
     public static void AddAutoMapperConfig(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(RoleMapping));
+    }
+
+    public static async Task UseInitializeDatabaseAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+        await dbInitializer.InitializeAsync();
     }
 }
