@@ -36,6 +36,7 @@ builder.Services.AddConfigureServiceAPI(builder.Configuration);
 builder.Services.AddConfigureServiceService(builder.Configuration);
 builder.Services.AddConfigureServiceRepository(builder.Configuration);
 var app = builder.Build();
+app.UseCors("AllowAll");
 if (app.Environment.IsDevelopment())
 {
     await app.UseInitializeDatabaseAsync();
