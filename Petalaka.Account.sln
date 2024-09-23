@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Petalaka.Account.Core", "Pe
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E6789515-0A5A-4734-B81F-A3AC005BB3AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petalaka.Service.Shared", "Petalaka.Service.Shared\Petalaka.Service.Shared.csproj", "{92148C23-1CC7-4FAF-8BFD-73D4827FADCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{E6789515-0A5A-4734-B81F-A3AC005BB3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6789515-0A5A-4734-B81F-A3AC005BB3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6789515-0A5A-4734-B81F-A3AC005BB3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92148C23-1CC7-4FAF-8BFD-73D4827FADCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92148C23-1CC7-4FAF-8BFD-73D4827FADCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92148C23-1CC7-4FAF-8BFD-73D4827FADCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92148C23-1CC7-4FAF-8BFD-73D4827FADCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{DE219E97-13A4-461D-9534-2643E33A3C47} = {C89F5980-4326-449C-81AE-64CC83557BDE}
 		{429A3B2A-8DF9-4C65-B0E4-668623E6B73A} = {123DBB14-AA69-4F2F-858A-1D73D2EC727F}
 		{D30C8FBD-C767-4FD0-88BF-7099A2A82F19} = {7D4F9E82-12CB-4725-890F-246586DA3C76}
+		{92148C23-1CC7-4FAF-8BFD-73D4827FADCD} = {123DBB14-AA69-4F2F-858A-1D73D2EC727F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25234553-AD0C-423D-B147-B8F0F5208692}

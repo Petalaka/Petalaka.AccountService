@@ -7,14 +7,12 @@ namespace Petalaka.Account.Repository.Base;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PetalakaDbContext>
 {
-    private readonly IConfiguration _configuration;
-    public DesignTimeDbContextFactory(IConfiguration configuration)
+    public DesignTimeDbContextFactory()
     {
-        _configuration = configuration;
     }
     public PetalakaDbContext CreateDbContext(string[] args)
     {
-
+        var _configuration = ReadConfiguration.ReadDbDesignTimeAppSettings();
         //var configuration = CoreHelper.GetDbDesignTimeAppSettings;
         var builder = new DbContextOptionsBuilder<PetalakaDbContext>();
         builder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));

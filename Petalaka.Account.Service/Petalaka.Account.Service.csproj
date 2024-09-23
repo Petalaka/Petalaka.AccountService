@@ -9,12 +9,19 @@
   <ItemGroup>
     <ProjectReference Include="..\Petalaka.Account.Contract.Service\Petalaka.Account.Contract.Service.csproj" />
     <ProjectReference Include="..\Petalaka.Account.Repository\Petalaka.Account.Repository.csproj" />
+    <ProjectReference Include="..\Petalaka.Service.Shared\Petalaka.Service.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Identity">
       <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.5\Microsoft.AspNetCore.Identity.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.2.5" />
+    <PackageReference Include="MassTransit.Abstractions" Version="8.2.5" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
   </ItemGroup>
 
 </Project>

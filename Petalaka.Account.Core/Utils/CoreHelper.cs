@@ -7,4 +7,6 @@ public class CoreHelper
     public static DateTimeOffset SystemTimeNow => DateTimeParsing.ConvertToUtcPlus7(DateTimeOffset.Now);
     public static IConfiguration GetRootAppSettings => ReadConfiguration.ReadAppSettings();
     public static IConfiguration GetDbDesignTimeAppSettings => ReadConfiguration.ReadDbDesignTimeAppSettings();
+    public static string GenerateTimeStamp => TimeStampHelper.GenerateTimeStamp();
+    public static string GenerateTimeStampOtp => TimeStampHelper.GenerateTimeStampOtp();
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Petalaka.Account.Repository.Base;
 
@@ -11,9 +12,11 @@ using Petalaka.Account.Repository.Base;
 namespace Petalaka.Account.Repository.Migrations
 {
     [DbContext(typeof(PetalakaDbContext))]
-    partial class PetalakaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922032911_add email and phone otp")]
+    partial class addemailandphoneotp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,9 +146,11 @@ namespace Petalaka.Account.Repository.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("EmailOtp")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailOtpExpiration")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
@@ -182,9 +187,11 @@ namespace Petalaka.Account.Repository.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PhoneOtp")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneOtpExpiration")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Salt")

@@ -33,9 +33,11 @@ public class RoleService : IRoleService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Role already exists");
         }
+
+        var roleName = StringConverterHelper.CapitalizeString(request.RoleName);
         var newRole = new ApplicationRole
         {
-            Name = request.RoleName
+            Name = roleName
         };
         await _roleManager.CreateAsync(newRole);
     }

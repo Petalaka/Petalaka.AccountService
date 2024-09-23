@@ -6,10 +6,11 @@ services:
     build:
       context: .
       dockerfile: Petalaka.Account.API/Dockerfile
-    environment:
-      - SERVICE_PORT=8080
     networks:
       - petalaka-accountservice-network
+      - petalaka.rabbitmq_network
+    restart: 
+        on-failure
     depends_on: 
       - petalaka.account.sqlserver
 
@@ -24,9 +25,21 @@ services:
       - petalaka-accountservice-network
     volumes:
       - petalaka-account-sqlserver:/var/opt/mssql
-
+  petalaka.rabbitmq:
+    image: rabbitmq:management
+    container_name: petalaka.rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: rabbitmqsecretpassword123
+    networks:
+      - petalaka.rabbitmq_network
 networks:
-     petalaka-accountservice-network: 
-        driver: bridge
+  petalaka-accountservice-network: 
+    driver: bridge
+  petalaka.rabbitmq_network:
+    driver: bridge
 volumes:
   petalaka-account-sqlserver:

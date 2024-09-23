@@ -16,6 +16,12 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public DateTimeOffset CreatedTime { get; set; }
     public DateTimeOffset LastUpdatedTime { get; set; }
     public DateTimeOffset? DeletedTime { get; set; }
+    
+    public string? EmailOtp { get; set; }
+    public string? EmailOtpExpiration { get; set; }
+    public string? PhoneOtp { get; set; }
+    public string? PhoneOtpExpiration { get; set; }
+    
     public ApplicationUser()
     {
         CreatedTime = CoreHelper.SystemTimeNow;
