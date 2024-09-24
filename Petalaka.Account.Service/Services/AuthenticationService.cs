@@ -117,7 +117,7 @@ public class AuthenticationService : IAuthenticationService
         string salt = PasswordHasher.GenerateSalt();
         string hashedPassword = PasswordHasher.HashPassword(request.Password, salt);
         string emailOtp = OtpGenerator.GenerateOtp();
-        string emailOtpExpiry = CoreHelper.GenerateTimeStampOtp;
+        string emailOtpExpiry = TimeStampHelper.GenerateTimeStampOtp();
         
         ApplicationUser newUser = new ApplicationUser
         {

@@ -56,7 +56,7 @@ public class AccountService : IAccountService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is incorrect");
         }
-        if(String.CompareOrdinal(user.EmailOtpExpiration, CoreHelper.GenerateTimeStamp) < 0 )
+        if(String.CompareOrdinal(user.EmailOtpExpiration, TimeStampHelper.GenerateTimeStamp()) < 0 )
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is expired");
         }
