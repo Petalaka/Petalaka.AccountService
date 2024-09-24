@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
 
@@ -11,8 +12,10 @@ public class RegisterRequestModel
     public string? Address { get; set; }
     [DataType(DataType.DateTime, ErrorMessage = "Invalid date of birth format")]
     public DateTime DateOfBirth { get; set; }
-    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Full name should only contain letters and spaces, no special characters or numbers")]
+    [RegularExpression(@"^[\p{L}[\s]+$", ErrorMessage = "Full name should only contain letters and spaces, no special characters or numbers")]
+    [DefaultValue("string")]
     public string FullName { get; set; }
     [Phone(ErrorMessage = "Invalid phone number")]
+    [DefaultValue("0909123456")]
     public string PhoneNumber { get; set; }
 }
