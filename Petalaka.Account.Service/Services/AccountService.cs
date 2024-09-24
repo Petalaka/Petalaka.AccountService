@@ -56,7 +56,7 @@ public class AccountService : IAccountService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is incorrect");
         }
-        if(String.CompareOrdinal(user.EmailOtpExpiration, TimeStampHelper.GenerateTimeStamp()) < 0 )
+        if(String.CompareOrdinal(user.EmailOtpExpiration, TimeStampHelper.GenerateUnixTimeStamp()) < 0 )
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is expired");
         }
@@ -73,7 +73,7 @@ public class AccountService : IAccountService
             throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
         }
         user.EmailOtp = OtpGenerator.GenerateOtp();
-        user.EmailOtpExpiration = TimeStampHelper.GenerateTimeStampOtp();
+        user.EmailOtpExpiration = TimeStampHelper.GenerateUnixTimeStampOtp();
         await _userManager.UpdateAsync(user);
         IEmailOtpEvent message = new EmailOtpEvent
         {

@@ -11,12 +11,12 @@ public static class TimeStampHelper
         return CoreHelper.SystemTimeNow.AddMinutes(10).ToString("yyyyMMddHHss");
     }
     
-    public static string GenerateTimeStampOtp(DateTimeOffset dateTime)
+    public static string GenerateUnixTimeStampOtp()
     {
         return CoreHelper.SystemTimeNow.AddMinutes(10).ToUnixTimeSeconds().ToString();
     }
     
-    public static string GenerateTimeStamp(DateTimeOffset dateTime)
+    public static string GenerateUnixTimeStamp()
     {
         return CoreHelper.SystemTimeNow.ToUnixTimeSeconds().ToString();
 
