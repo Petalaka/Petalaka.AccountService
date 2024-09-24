@@ -17,11 +17,18 @@ public class AccountController : BaseController
     }
       
     [HttpPost]
-    [Route("v1/email-confirmation")]
+    [Route("v1/email/confirmation")]
     public async Task<BaseResponse> ConfirmEmail([FromBody] ConfirmEmailRequestModel request)
     {
         await _accountService.ConfirmEmail(request);
         return new BaseResponse(StatusCodes.Status200OK, "Email confirmed");
     }
     
+    [HttpPost]
+    [Route("v1/email/otp")]
+    public async Task<BaseResponse> SendEmailOtp([FromBody] ResendEmailConfirmationRequestModel request)
+    {
+        await _accountService.SendEmailOtp(request);
+        return new BaseResponse(StatusCodes.Status200OK, "Email OTP sent");
+    }
 }

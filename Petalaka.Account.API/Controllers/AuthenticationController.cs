@@ -9,13 +9,12 @@ namespace Petalaka.Account.API.Controllers;
 
 public class AuthenticationController : BaseController
 {
-    private readonly IAccountService _accountService;
-    public AuthenticationController
-        (
-            IAccountService accountService
+    private readonly IAuthenticationService _authenService;
+    public AuthenticationController(
+            IAuthenticationService authenService
         )
     {
-        _accountService = accountService;
+        _authenService = authenService;
     }
     /// <summary>
     /// User register account
@@ -29,7 +28,7 @@ public class AuthenticationController : BaseController
     [Route("v1/registration")]
     public async Task<BaseResponse> RegisterAccount([FromBody] RegisterRequestModel request)
     {
-        await _accountService.RegisterAccount(request);
+        await _authenService.RegisterAccount(request);
         return new BaseResponse(StatusCodes.Status201Created, "Created successfully");
     }
     
@@ -42,7 +41,7 @@ public class AuthenticationController : BaseController
     [Route("v1/authentication")]
     public async Task<BaseResponse<LoginResponseModel>> Login([FromBody] LoginRequestModel request)
     {
-        var loginResult = await _accountService.Login(request);
+        var loginResult = await _authenService.Login(request);
         return new BaseResponse<LoginResponseModel>
         {
             StatusCode = StatusCodes.Status200OK,
