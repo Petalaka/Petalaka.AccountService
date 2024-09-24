@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ public class AccountService : IAccountService
     private readonly ITokenService _tokenService;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly RoleManager<ApplicationRole> _roleManager;
-    private readonly IBus _bus;
+    private readonly IMapper _mapper; 
     
     public AccountService
     (
@@ -32,7 +33,7 @@ public class AccountService : IAccountService
         ITokenService tokenService, 
         IPublishEndpoint publishEndpoint,
         RoleManager<ApplicationRole> roleManager,
-        IBus bus
+        IMapper mapper
         )
     {
         _userManager = userManager;
@@ -41,12 +42,12 @@ public class AccountService : IAccountService
         _tokenService = tokenService;
         _publishEndpoint = publishEndpoint;
         _roleManager = roleManager;
-        _bus = bus;
+        _mapper = mapper;
     }
 
     public async Task RegisterAccount(RegisterRequestModel request)
     {
-        ApplicationUser user = await _unitOfWork.ApplicationUserRepository.FindUndeletedAsync(p => p.Email == request.Email || p.UserName == request.Username);
+        ApplicationUser user = await _unitOfWork.ApplicationUserRepository.FindUndeletedAsync(p => p.Email == request.Email);
         if(user != null)
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "User already exists");
@@ -65,9 +66,10 @@ public class AccountService : IAccountService
         string hashedPassword = PasswordHasher.HashPassword(request.Password, salt);
         string emailOtp = OtpGenerator.GenerateOtp();
         string emailOtpExpiry = CoreHelper.GenerateTimeStampOtp;
+        
         ApplicationUser newUser = new ApplicationUser
         {
-            UserName = request.Username,
+            UserName = request.Email,
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             FullName = request.FullName,
@@ -76,7 +78,10 @@ public class AccountService : IAccountService
             Salt = salt,
             PasswordHash = hashedPassword,
             EmailOtp = emailOtp,
-            EmailOtpExpiration = emailOtpExpiry
+            EmailOtpExpiration = emailOtpExpiry,
+            Address = request.Address,
+            Gender = request.Gender,
+            DateOfBirth = request.DateOfBirth,
         };
         //create user with identity
         await _userManager.CreateAsync(newUser, hashedPassword);

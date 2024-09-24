@@ -12,8 +12,8 @@ using Petalaka.Account.Repository.Base;
 namespace Petalaka.Account.Repository.Migrations
 {
     [DbContext(typeof(PetalakaDbContext))]
-    [Migration("20240911174446_remove id")]
-    partial class removeid
+    [Migration("20240924091442_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,6 +122,9 @@ namespace Petalaka.Account.Repository.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -131,6 +134,9 @@ namespace Petalaka.Account.Repository.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
@@ -145,8 +151,17 @@ namespace Petalaka.Account.Repository.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("EmailOtp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailOtpExpiration")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastUpdatedBy")
@@ -178,8 +193,13 @@ namespace Petalaka.Account.Repository.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PhoneOtp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneOtpExpiration")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Salt")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")

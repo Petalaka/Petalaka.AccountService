@@ -16,7 +16,7 @@ public static class ReadConfiguration
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.Api")))
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json")
             .Build();
         return configuration;
     }

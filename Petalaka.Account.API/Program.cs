@@ -39,8 +39,9 @@ var app = builder.Build();
 app.UseCors("AllowAll");
 if (app.Environment.IsDevelopment())
 {
-    await app.UseInitializeDatabaseAsync();
 }
+await app.UseInitializeDatabaseAsync();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
