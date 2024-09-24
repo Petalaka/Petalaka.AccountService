@@ -10,4 +10,5 @@ public interface IAccountService
     Task<IEnumerable<ApplicationUser>> GetAllUsers();
     Task ConfirmEmail(ConfirmEmailRequestModel request);
     Task SendEmailOtp(ResendEmailConfirmationRequestModel request);
+    Task ChangePassword(string email, ChangePasswordRequestModel request);
 }

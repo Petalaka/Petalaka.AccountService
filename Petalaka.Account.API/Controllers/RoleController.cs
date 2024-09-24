@@ -16,17 +16,33 @@ public class RoleController : BaseController
         _roleService = roleService;
     }
     
+    /// <summary>
+    /// Create new role
+    /// </summary>
+    /// <remarks>
+    /// Require authentication as admin role to perform this function
+    /// </remarks>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("v1/roles")]
+    [Authorize(Roles="ADMIN")]
     public async Task<BaseResponse> CreateRole([FromBody] CreateRoleRequestModel request)
     {
         await _roleService.CreateRoleAsync(request);
         return new BaseResponse(StatusCodes.Status201Created, "Created successfully");
     }
     
+    /// <summary>
+    /// Get all roles
+    /// </summary>
+    /// <remarks>
+    /// Require authentication as admin role to perform this function
+    /// </remarks>
+    /// <returns></returns>
     [HttpGet]
     [Route("v1/roles")]
-    [Authorize(Roles = "user")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<BaseResponse<IEnumerable<GetRoleResponseModel>>> GetRoles()
     {
         var getRolesResult = await _roleService.GetRolesAsync();

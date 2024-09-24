@@ -17,7 +17,7 @@ public class AuthenticationController : BaseController
         _authenService = authenService;
     }
     /// <summary>
-    /// User register account
+    /// User register account with email and password
     /// </summary>
     /// <remarks>
     /// Default role is USER
@@ -33,7 +33,7 @@ public class AuthenticationController : BaseController
     }
     
     /// <summary>
-    /// Login
+    /// Login By Email and Password
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>

@@ -32,12 +32,12 @@ public class TokenService : ITokenService
         var userRoles = await _userManager.GetRolesAsync(user);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Sid, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
-            new Claim(ClaimTypes.Role, string.Join(",", userRoles))
+        {   
+            new Claim("UserName", user.Id.ToString()),
+            new Claim("UserName", user.UserName),
+            new Claim("UserEmail", user.Email),
+            new Claim("UserPhone", user.PhoneNumber),
+            new Claim("UserRole", string.Join(",", userRoles))
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
