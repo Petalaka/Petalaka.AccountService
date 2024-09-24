@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.CustomSettings;
 using Petalaka.Account.Core.Utils;
 
@@ -16,6 +17,8 @@ public static class ConfigureService
         services.ConfigRoute();
         services.AddCors();
         services.AddSwagger();
+        services.AddScoped<ValidateModelStateAttribute>();
+
     }
     
     public static void ConfigRoute(this IServiceCollection services)

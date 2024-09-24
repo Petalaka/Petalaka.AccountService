@@ -10,4 +10,5 @@ public interface IAccountService
     Task RegisterAccount(RegisterRequestModel request);
     Task<IEnumerable<ApplicationUser>> GetAllUsers();
     Task<LoginResponseModel> Login(LoginRequestModel request);
+    Task ConfirmEmail(ConfirmEmailRequestModel request);
 }

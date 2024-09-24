@@ -45,5 +45,12 @@ public class AccountController : BaseController
         };
     }
   
+    [HttpPost]
+    [Route("v1/email-confirmation")]
+    public async Task<BaseResponse> ConfirmEmail([FromBody] ConfirmEmailRequestModel request)
+    {
+        await _accountService.ConfirmEmail(request);
+        return new BaseResponse(StatusCodes.Status200OK, "Email confirmed");
+    }
     
 }

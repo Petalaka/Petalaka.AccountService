@@ -151,26 +151,32 @@ public class AccountService : IAccountService
         {
             AccessToken = token.accessToken,
             RefreshToken = token.refreshToken,
+            Role = await _userManager.GetRolesAsync(user)
         };
     }
     
     
-   /* public async Task ConfirmEmail(ConfirmEmailRequestModel request)
+    public async Task ConfirmEmail(ConfirmEmailRequestModel request)
     {
         ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         if(user == null)
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
         }
+        if(user.EmailConfirmed)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Email is already confirmed");
+        }
         if(user.EmailOtp != request.EmailOtp)
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is incorrect");
         }
-        if(user.EmailOtpExpiration < CoreHelper.GenerateTimeStampOtp)
+        if(String.CompareOrdinal(user.EmailOtpExpiration, CoreHelper.GenerateTimeStamp) < 0 )
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email OTP is expired");
         }
         user.EmailConfirmed = true;
+        user.EmailOtp = null;
         await _userManager.UpdateAsync(user);
-    }    */
+    }    
 }

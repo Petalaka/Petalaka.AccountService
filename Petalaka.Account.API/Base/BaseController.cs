@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Petalaka.Account.API.Base;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BaseController : ControllerBase
+[ServiceFilter(typeof(ValidateModelStateAttribute))]
+public abstract class BaseController : ControllerBase
 {
     
 }

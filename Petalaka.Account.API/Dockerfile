@@ -15,6 +15,7 @@ COPY ["Petalaka.Account.Contract.Service/Petalaka.Account.Contract.Service.cspro
 COPY ["Petalaka.Account.Repository/Petalaka.Account.Repository.csproj", "Petalaka.Account.Repository/"]
 COPY ["Petalaka.Account.Contract.Repository/Petalaka.Account.Contract.Repository.csproj", "Petalaka.Account.Contract.Repository/"]
 COPY ["Petalaka.Account.Core/Petalaka.Account.Core.csproj", "Petalaka.Account.Core/"]
+COPY ["Petalaka.Service.Shared/Petalaka.Service.Shared.csproj", "Petalaka.Service.Shared/"]
 RUN dotnet restore "./Petalaka.Account.API/Petalaka.Account.API.csproj"
 COPY . .
 WORKDIR "/src/Petalaka.Account.API"
