@@ -60,4 +60,36 @@ public class AccountController : BaseController
         await _accountService.ChangePassword(userEmail, request);
         return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Password changed"));
     }
+    
+    /// <summary>
+    /// Confirm forgot password, using email otp to verify user
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>
+    /// AccessToken and RefreshToken
+    /// </returns>
+    [HttpPut]
+    [Route("v1/password/recovery")]
+    public async Task<ActionResult<BaseResponse>> ForgotPassword([FromBody] ForgotPasswordRequestModel request)
+    {
+        var response = await _accountService.ForgotPassword(request);
+        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Forgot password accepted", response));
+    }
+    
+    [HttpPost]
+    [Route("v1/password/recovery")]
+    [Authorize]
+    public async Task<ActionResult<BaseResponse>> SendEmailOtpForgotPassword([FromBody] NewPasswordRequestModel request)
+    {
+        string email = User.Claims.FirstOrDefault(p => p.Type == "UserEmail").Value;
+        await _accountService.NewPasswordForgot(email, request);
+        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Email OTP sent"));
+    }
+    
+    [HttpPut]
+    [Route("v2/password/reset")]
+    public async Task ForgotPasswordV2([FromBody] ForgotPasswordV2RequestModel request)
+    {
+        await _accountService.ForgotPasswordV2(request);
+    }
 }

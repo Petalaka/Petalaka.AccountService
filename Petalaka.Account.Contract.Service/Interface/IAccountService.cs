@@ -11,4 +11,10 @@ public interface IAccountService
     Task ConfirmEmail(ConfirmEmailRequestModel request);
     Task SendEmailOtp(ResendEmailConfirmationRequestModel request);
     Task ChangePassword(string email, ChangePasswordRequestModel request);
+
+    Task<ConfirmForgotPasswordResponseModel> ForgotPassword(
+        ForgotPasswordRequestModel request);
+
+    Task NewPasswordForgot(string email, NewPasswordRequestModel request);
+    Task ForgotPasswordV2(ForgotPasswordV2RequestModel request);
 }

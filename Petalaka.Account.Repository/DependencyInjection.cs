@@ -15,5 +15,6 @@ public static class DependencyInjection
         services.AddScoped<DbInitializer>();
 
         services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+        services.AddScoped<IApplicationRoleRepository, ApplicationRoleRepository>();
     }
 }

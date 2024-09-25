@@ -49,6 +49,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IBase
 
     public void Insert(T entity) => _dbSet.Add(entity);
     public async Task InsertAsync(T entity) => await _dbSet.AddAsync(entity);
+    public async Task InsertRangeAsync(IEnumerable<T> entities) => await _dbSet.AddRangeAsync(entities);
     public void SaveChanges() => _dbContext.SaveChanges();
     public async Task SaveChangesAsync() => await _dbContext.SaveChangesAsync();
     public void Update(T entity) => _dbContext.Entry(entity).State = EntityState.Modified;

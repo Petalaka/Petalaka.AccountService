@@ -37,7 +37,7 @@ public class TokenService : ITokenService
             new Claim("UserName", user.UserName),
             new Claim("UserEmail", user.Email),
             new Claim("UserPhone", user.PhoneNumber),
-            new Claim("UserRole", string.Join(",", userRoles))
+            new Claim(ClaimTypes.Role, string.Join(",", userRoles))
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

@@ -5,4 +5,5 @@ namespace Petalaka.Account.Contract.Repository.Interface;
 public interface IUnitOfWork : IDisposable, IBaseUnitOfWork
 {
     IApplicationUserRepository ApplicationUserRepository { get; }
+    IApplicationRoleRepository ApplicationRoleRepository { get; }
 }

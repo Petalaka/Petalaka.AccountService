@@ -1,0 +1,13 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+
+public class ForgotPasswordRequestModel
+{
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+    [Required]
+    [RegularExpression(@"^\d{6}$", ErrorMessage = "The value must be exactly 6 digits.")]
+    public string EmailOtp { get; set; }
+}

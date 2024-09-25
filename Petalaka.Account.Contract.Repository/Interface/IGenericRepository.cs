@@ -13,6 +13,7 @@ public interface IGenericRepository<T> where T : class
     Task<IEnumerable<T>> FindAll(Expression<Func<T, bool>> predicate);
     Task<IEnumerable<T>> FindAllUndeleted(Expression<Func<T, bool>> predicate);
     void Insert(T entity);
+    Task InsertRangeAsync(IEnumerable<T> entities);
     Task InsertAsync(T entity);
     void SaveChanges();
     Task SaveChangesAsync();

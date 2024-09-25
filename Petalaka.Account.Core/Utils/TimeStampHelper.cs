@@ -19,6 +19,14 @@ public static class TimeStampHelper
     public static string GenerateUnixTimeStamp()
     {
         return CoreHelper.SystemTimeNow.ToUnixTimeSeconds().ToString();
-
+    }
+    
+    public static long GenerateCustomUnixTimeStamp(int? hours, int? minutes, int? seconds)
+    {
+        return CoreHelper.SystemTimeNow
+            .AddHours(hours ?? 0)
+            .AddMinutes(minutes ?? 0)
+            .AddSeconds(seconds ?? 0)
+            .ToUnixTimeSeconds();
     }
 }

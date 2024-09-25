@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,7 @@ public class AccountService : IAccountService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ITokenService _tokenService;
     private readonly IMapper _mapper; 
     
     public AccountService
@@ -27,13 +29,15 @@ public class AccountService : IAccountService
         UserManager<ApplicationUser> userManager, 
         IUnitOfWork unitOfWork,
         IPublishEndpoint publishEndpoint,
-        IMapper mapper
+        IMapper mapper,
+        ITokenService tokenService
         )
     {
         _userManager = userManager;
         _unitOfWork = unitOfWork;
         _publishEndpoint = publishEndpoint;
         _mapper = mapper;
+        _tokenService = tokenService;
     }
     
     public async Task<IEnumerable<ApplicationUser>> GetAllUsers()
@@ -132,5 +136,97 @@ public class AccountService : IAccountService
         //Update salt and save salt to database
         user.Salt = newSalt;
         await _userManager.UpdateAsync(user);
+    }
+
+    public async Task<ConfirmForgotPasswordResponseModel> ForgotPassword(ForgotPasswordRequestModel request)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
+        }
+
+        if (!user.EmailConfirmed)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Email is not confirmed");
+        } 
+        
+        if(user.EmailOtp != request.EmailOtp)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "OTP is incorrect");
+        }
+        //Check if forgot password otp is expired in 5 minutes as unix timestamp
+        if(String.CompareOrdinal(user.EmailOtpExpiration, TimeStampHelper.GenerateUnixTimeStamp()) < 0 )
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "OTP is expired");
+        }
+        //Set forgot password otp to null
+        user.EmailOtp = null;
+        await _userManager.UpdateAsync(user);
+        
+        var token = await _tokenService.GenerateTokens(user);
+        return new ConfirmForgotPasswordResponseModel
+        {
+            AccessToken = token.accessToken,
+            RefreshToken = token.refreshToken,
+        };
+    }
+    
+    
+    public async Task NewPasswordForgot(string email, NewPasswordRequestModel request)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(email);
+        
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
+        }
+        
+        if (!user.EmailConfirmed)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Email is not confirmed");
+        }
+        
+        //Generate new salt and hash new password with salt
+        string newSalt = PasswordHasher.GenerateSalt();
+        string newHashedPassword = PasswordHasher.HashPassword(request.NewPassword, newSalt);
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //Change password
+        IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newHashedPassword);
+        if(!result.Succeeded)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, result.Errors.First().Description);
+        }
+        
+        //Update salt and save salt to database
+        user.Salt = newSalt;
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task ForgotPasswordV2(ForgotPasswordV2RequestModel request)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
+        }
+        
+        if (!user.EmailConfirmed)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Email is not confirmed");
+        }
+        
+        string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        string timeStamp = TimeStampHelper.GenerateCustomUnixTimeStamp(0, 10, 0).ToString();
+        
+        //publish email otp to rabbitmq
+        IForgotPasswordEventV2 message = new ForgotPasswordEventV2()
+        {
+            Email = user.Email,
+            ResetPasswordToken = resetPasswordToken,
+            ExpiredTimeStamp = timeStamp
+        };  
+        await _publishEndpoint.Publish(message);
     }
 }
