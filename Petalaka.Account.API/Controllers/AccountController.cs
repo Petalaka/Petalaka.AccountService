@@ -76,18 +76,27 @@ public class AccountController : BaseController
         return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Forgot password accepted", response));
     }
     
+    /// <summary>
+    /// New password forgot, using email otp to verify user and take bearer token to change password (Unsafe method)
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("v1/password/recovery")]
     [Authorize]
-    public async Task<ActionResult<BaseResponse>> SendEmailOtpForgotPassword([FromBody] NewPasswordRequestModel request)
+    public async Task<ActionResult<BaseResponse>> NewPasswordForgot([FromBody] NewPasswordRequestModel request)
     {
         string email = User.Claims.FirstOrDefault(p => p.Type == "UserEmail").Value;
         await _accountService.NewPasswordForgot(email, request);
-        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Email OTP sent"));
+        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "New password accepted"));
     }
     
+    /// <summary>
+    /// Sending email reset password token to user email (as redirect link) (Safe method)
+    /// </summary>
+    /// <param name="request"></param>
     [HttpPut]
-    [Route("v2/password/reset")]
+    [Route("v2/password/recovery")]
     public async Task ForgotPasswordV2([FromBody] ForgotPasswordV2RequestModel request)
     {
         await _accountService.ForgotPasswordV2(request);

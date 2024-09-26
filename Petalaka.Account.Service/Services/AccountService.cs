@@ -191,8 +191,8 @@ public class AccountService : IAccountService
         string newSalt = PasswordHasher.GenerateSalt();
         string newHashedPassword = PasswordHasher.HashPassword(request.NewPassword, newSalt);
 
+        //Change password using reset password token
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //Change password
         IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newHashedPassword);
         if(!result.Succeeded)
         {
@@ -216,11 +216,11 @@ public class AccountService : IAccountService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "Email is not confirmed");
         }
-        
+        //Generate reset password token and expired timestamp
         string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         string timeStamp = TimeStampHelper.GenerateCustomUnixTimeStamp(0, 10, 0).ToString();
         
-        //publish email otp to rabbitmq
+        //publish email event to rabbitmq with reset password token and expired timestamp
         IForgotPasswordEventV2 message = new ForgotPasswordEventV2()
         {
             Email = user.Email,
