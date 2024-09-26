@@ -106,7 +106,18 @@ public class AccountController : BaseController
     /// <summary>
     /// Create new password when forgot password (Safe method)
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="request">
+    /// Data from reset password url return including:
+    /// - email
+    /// - token
+    /// - timestamp
+    ///
+    /// Data request from body:
+    /// - email: email,
+    /// - resetPasswordToken: token,
+    /// - expiredTimeStamp: timestamp
+    /// - newPassword: take from user input form
+    /// </param>
     /// <returns></returns>
     [HttpPost]
     [Route("v2/password/recovery")]
