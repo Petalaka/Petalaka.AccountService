@@ -229,4 +229,43 @@ public class AccountService : IAccountService
         };  
         await _publishEndpoint.Publish(message);
     }
+    
+    /// <summary>
+    /// Create new password using reset password token and expired timestamp, receive from email
+    /// </summary>
+    /// <param name="request"></param>
+    /// <exception cref="CoreException"></exception>
+    public async Task NewPasswordForgotV2(NewPasswordForgotV2RequestModel request)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+        
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
+        }
+        
+        if (!user.EmailConfirmed)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Email is not confirmed");
+        }
+        
+        if(String.CompareOrdinal(request.ExpiredTimeStamp, TimeStampHelper.GenerateUnixTimeStamp()) < 0 )
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Reset password token is expired");
+        }
+        
+        //Generate new salt and hash new password with salt
+        string newSalt = PasswordHasher.GenerateSalt();
+        string newHashedPassword = PasswordHasher.HashPassword(request.NewPassword, newSalt);
+        
+        //Change password using reset password token
+        IdentityResult result = await _userManager.ResetPasswordAsync(user, request.ResetPasswordToken, newHashedPassword);
+        if(!result.Succeeded)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, result.Errors.First().Description);
+        }
+        
+        user.Salt = newSalt;
+        await _userManager.UpdateAsync(user);
+    }
 }

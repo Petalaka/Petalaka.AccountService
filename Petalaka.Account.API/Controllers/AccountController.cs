@@ -62,7 +62,7 @@ public class AccountController : BaseController
     }
     
     /// <summary>
-    /// Confirm forgot password, using email otp to verify user
+    /// Confirm forgot password, using email otp to verify user (Unsafe method)
     /// </summary>
     /// <param name="request"></param>
     /// <returns>
@@ -88,7 +88,7 @@ public class AccountController : BaseController
     {
         string email = User.Claims.FirstOrDefault(p => p.Type == "UserEmail").Value;
         await _accountService.NewPasswordForgot(email, request);
-        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "New password accepted"));
+        return Created(String.Empty, new BaseResponse(StatusCodes.Status201Created, "New password accepted"));
     }
     
     /// <summary>
@@ -97,8 +97,22 @@ public class AccountController : BaseController
     /// <param name="request"></param>
     [HttpPut]
     [Route("v2/password/recovery")]
-    public async Task ForgotPasswordV2([FromBody] ForgotPasswordV2RequestModel request)
+    public async Task<ActionResult<BaseResponse>> ForgotPasswordV2([FromBody] ForgotPasswordV2RequestModel request)
     {
         await _accountService.ForgotPasswordV2(request);
+        return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Forgot password accepted"));
+    }
+    
+    /// <summary>
+    /// Create new password when forgot password (Safe method)
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("v2/password/recovery")]
+    public async Task<ActionResult<BaseResponse>> NewPasswordForgotV2([FromBody] NewPasswordForgotV2RequestModel request)
+    {
+        await _accountService.NewPasswordForgotV2(request);
+        return Created(String.Empty, new BaseResponse(StatusCodes.Status201Created, "New password created"));
     }
 }

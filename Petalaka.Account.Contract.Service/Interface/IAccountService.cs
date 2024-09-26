@@ -17,4 +17,5 @@ public interface IAccountService
 
     Task NewPasswordForgot(string email, NewPasswordRequestModel request);
     Task ForgotPasswordV2(ForgotPasswordV2RequestModel request);
+    Task NewPasswordForgotV2(NewPasswordForgotV2RequestModel request);
 }
