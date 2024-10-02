@@ -32,9 +32,9 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 .AddSignInManager<SignInManager<ApplicationUser>>()
 .AddDefaultTokenProviders(); 
 
-builder.Services.AddConfigureServiceAPI(builder.Configuration);
-builder.Services.AddConfigureServiceService(builder.Configuration);
 builder.Services.AddConfigureServiceRepository(builder.Configuration);
+builder.Services.AddConfigureServiceService(builder.Configuration);
+builder.Services.AddConfigureServiceAPI(builder.Configuration);
 var app = builder.Build();
 app.UseCors("AllowAll");
 if (app.Environment.IsDevelopment())
@@ -52,6 +52,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service API v1");
 });
 app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+app.UseMiddleware<ValidateJwtTokenMiddleware>();
 app.UseHttpsRedirection();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {

@@ -11,7 +11,7 @@ public class PetalakaDbContext : IdentityDbContext<ApplicationUser, ApplicationR
     {
         
     }
-
+    public virtual DbSet<Provider> Providers => Set<Provider>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -24,4 +24,5 @@ public class PetalakaDbContext : IdentityDbContext<ApplicationUser, ApplicationR
             }
         }
     }
+    
 }

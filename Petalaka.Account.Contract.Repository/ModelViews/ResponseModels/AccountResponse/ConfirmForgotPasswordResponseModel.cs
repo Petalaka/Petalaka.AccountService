@@ -1,4 +1,4 @@
-﻿namespace Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
+﻿namespace Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.AccountResponse;
 
 public class ConfirmForgotPasswordResponseModel
 {

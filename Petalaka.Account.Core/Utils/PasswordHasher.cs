@@ -37,4 +37,22 @@ public class PasswordHasher
         var hashOfEnteredPassword = HashPassword(enteredPassword, storedSalt);
         return hashOfEnteredPassword.Equals(storedHash);
     }
+    
+    public static string GenerateSecurePassword()
+    {
+        int length = 12;
+        const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_-+=<>?{}[]|";
+        StringBuilder password = new StringBuilder();
+        using (var rng = new RNGCryptoServiceProvider())
+        {
+            byte[] data = new byte[4];
+            while (password.Length < length)
+            {
+                rng.GetBytes(data);
+                var randomValue = BitConverter.ToUInt32(data, 0);
+                password.Append(validChars[(int)(randomValue % validChars.Length)]);
+            }
+        }
+        return password.ToString();
+    }
 }

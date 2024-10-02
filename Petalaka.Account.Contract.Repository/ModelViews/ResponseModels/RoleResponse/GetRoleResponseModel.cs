@@ -1,4 +1,4 @@
-﻿namespace Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
+﻿namespace Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.RoleResponse;
 
 public class GetRoleResponseModel
 {

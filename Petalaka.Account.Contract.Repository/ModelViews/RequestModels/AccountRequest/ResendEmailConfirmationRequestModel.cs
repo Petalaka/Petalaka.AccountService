@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+namespace Petalaka.Account.Contract.Repository.ModelViews.RequestModels.AccountRequest;
 
 public class ResendEmailConfirmationRequestModel
 {

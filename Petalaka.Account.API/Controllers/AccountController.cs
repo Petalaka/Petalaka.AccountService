@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.AccountRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
 using Petalaka.Account.Contract.Service.Interface;
 
@@ -72,7 +73,8 @@ public class AccountController : BaseController
     [Route("v1/password/recovery")]
     public async Task<ActionResult<BaseResponse>> ForgotPassword([FromBody] ForgotPasswordRequestModel request)
     {
-        var response = await _accountService.ForgotPassword(request);
+        string userAgent = Request.Headers["User-Agent"].ToString();
+        var response = await _accountService.ForgotPassword(request, userAgent);
         return Accepted(String.Empty, new BaseResponse(StatusCodes.Status202Accepted, "Forgot password accepted", response));
     }
     

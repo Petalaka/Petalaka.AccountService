@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Petalaka.Account.Contract.Repository.Entities;
 using Petalaka.Account.Contract.Repository.Interface;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.AccountRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
+using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.AccountResponse;
 using Petalaka.Account.Contract.Service.Interface;
 using Petalaka.Account.Core.ExceptionCustom;
 using Petalaka.Account.Core.Utils;
@@ -138,7 +140,7 @@ public class AccountService : IAccountService
         await _userManager.UpdateAsync(user);
     }
 
-    public async Task<ConfirmForgotPasswordResponseModel> ForgotPassword(ForgotPasswordRequestModel request)
+    public async Task<ConfirmForgotPasswordResponseModel> ForgotPassword(ForgotPasswordRequestModel request, string deviceId)
     {
         ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         if(user == null)
@@ -164,7 +166,7 @@ public class AccountService : IAccountService
         user.EmailOtp = null;
         await _userManager.UpdateAsync(user);
         
-        var token = await _tokenService.GenerateTokens(user);
+        var token = await _tokenService.GenerateTokens(user, deviceId);
         return new ConfirmForgotPasswordResponseModel
         {
             AccessToken = token.accessToken,

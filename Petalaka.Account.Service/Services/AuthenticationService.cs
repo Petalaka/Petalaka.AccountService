@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Petalaka.Account.Contract.Repository.Entities;
 using Petalaka.Account.Contract.Repository.Interface;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.AuthenticationRequest;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.UserRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
+using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.AuthenticationResponse;
 using Petalaka.Account.Contract.Service.Interface;
 using Petalaka.Account.Core.ExceptionCustom;
 using Petalaka.Account.Core.Utils;
@@ -52,7 +55,7 @@ public class AuthenticationService : IAuthenticationService
     /// <param name="request"></param>
     /// <returns></returns>
     /// <exception cref="CoreException"></exception>
-    public async Task<LoginResponseModel> Login(LoginRequestModel request)
+    public async Task<LoginResponseModel> Login(LoginRequestModel request, string deviceId)
     {
         ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         if(user == null)
@@ -88,7 +91,7 @@ public class AuthenticationService : IAuthenticationService
             throw new CoreException(StatusCodes.Status400BadRequest, "Login failed");
         }
 
-        var token = await _tokenService.GenerateTokens(user);
+        var token = await _tokenService.GenerateTokens(user, deviceId);
         return new LoginResponseModel
         {
             AccessToken = token.accessToken,

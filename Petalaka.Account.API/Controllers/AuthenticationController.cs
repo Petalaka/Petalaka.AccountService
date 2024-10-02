@@ -2,7 +2,10 @@
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.AuthenticationRequest;
+using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.UserRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels;
+using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.AuthenticationResponse;
 using Petalaka.Account.Contract.Service.Interface;
 
 namespace Petalaka.Account.API.Controllers;
@@ -31,7 +34,7 @@ public class AuthenticationController : BaseController
         await _authenService.RegisterAccount(request);
         return new BaseResponse(StatusCodes.Status201Created, "Created successfully");
     }
-    
+
     /// <summary>
     /// Login By Email and Password
     /// </summary>
@@ -41,7 +44,8 @@ public class AuthenticationController : BaseController
     [Route("v1/authentication")]
     public async Task<BaseResponse<LoginResponseModel>> Login([FromBody] LoginRequestModel request)
     {
-        var loginResult = await _authenService.Login(request);
+        string userAgent = Request.Headers["User-Agent"].ToString();
+        var loginResult = await _authenService.Login(request, userAgent);
         return new BaseResponse<LoginResponseModel>
         {
             StatusCode = StatusCodes.Status200OK,

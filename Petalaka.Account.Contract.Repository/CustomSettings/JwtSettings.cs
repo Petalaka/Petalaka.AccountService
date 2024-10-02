@@ -6,7 +6,7 @@ public class JwtSettings
     public string? Issuer { get; set; }
     public string? Audience { get; set; }
     public int AccessTokenExpirationMinutes { get; set; }
-    public int RefreshTokenExpirationDays { get; set; }
+    public int RefreshTokenExpirationHours { get; set; }
 
     public bool IsValid()
     {
@@ -30,9 +30,9 @@ public class JwtSettings
             throw new ArgumentException("Cannot read settings or AccessTokenExpirationMinutes must be greater than 0.");
         }
         
-        if(RefreshTokenExpirationDays <= 0)
+        if(RefreshTokenExpirationHours <= 0)
         {
-            throw new ArgumentException("Cannot read settings or RefreshTokenExpirationDays must be greater than 0.");
+            throw new ArgumentException("Cannot read settings or RefreshTokenExpirationHours must be greater than 0.");
         }
 
         return true;

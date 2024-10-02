@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Petalaka.Account.API.Base;
+using Petalaka.Account.API.Controllers;
+using Petalaka.Account.API.Security;
 using Petalaka.Account.Contract.Repository.CustomSettings;
 using Petalaka.Account.Core.Utils;
 
@@ -40,11 +42,11 @@ public static class ConfigureService
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
+                Type = SecuritySchemeType.Http,
                 Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\n\nExample: \"Bearer yourTokenHere\"",
+                Description = "Enter your valid token in the text input below.\n\nExample: \"yourTokenHere\"",
             });
             
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -88,8 +90,8 @@ public static class ConfigureService
                 Audience = configuration.GetSection("JwtSettings:Audience").Value,
                 AccessTokenExpirationMinutes =
                     Convert.ToInt32(configuration.GetSection("JwtSettings:AccessTokenExpiresInMinutes").Value),
-                RefreshTokenExpirationDays =
-                    Convert.ToInt32(configuration.GetSection("JwtSettings:RefreshTokenExpiresInMinutes").Value)
+                RefreshTokenExpirationHours = 
+                    Convert.ToInt32(configuration.GetSection("JwtSettings:RefreshTokenExpiresInHours").Value)
             };
             jwtSettings.IsValid();
             return jwtSettings;
@@ -118,6 +120,9 @@ public static class ConfigureService
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("Key").Value)),
                 ClockSkew = TimeSpan.Zero // No tolerance for token expiration
             };
+            /*
+            options.Events = new CustomJwtBearerEvents();
+        */
         });
     }
 }

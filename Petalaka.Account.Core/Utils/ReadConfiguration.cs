@@ -12,7 +12,7 @@ public static class ReadConfiguration
             .Build();
         return configuration;
     }
-    public static IConfiguration ReadDbDesignTimeAppSettings()
+    public static IConfiguration ReadBasePathAppSettings()
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.Api")))

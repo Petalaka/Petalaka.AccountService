@@ -59,5 +59,4 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IBase
         _dbContext.Entry(entity).State = EntityState.Modified;
         entity.DeletedTime = DateTime.UtcNow;
     }
-    
 }

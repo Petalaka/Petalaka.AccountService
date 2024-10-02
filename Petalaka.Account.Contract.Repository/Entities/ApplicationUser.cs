@@ -8,10 +8,10 @@ namespace Petalaka.Account.Contract.Repository.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
 {
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
     public string? Gender { get; set; }
     public string? Address { get; set; }
-    public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public string? Salt { get; set; }
     public string? CreatedBy { get; set; }
     public string? LastUpdatedBy { get; set; }

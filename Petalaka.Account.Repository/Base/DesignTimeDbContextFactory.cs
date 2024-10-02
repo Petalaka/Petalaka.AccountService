@@ -12,7 +12,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PetalakaDb
     }
     public PetalakaDbContext CreateDbContext(string[] args)
     {
-        var configuration = ReadConfiguration.ReadDbDesignTimeAppSettings();
+        var configuration = ReadConfiguration.ReadBasePathAppSettings();
         string? connectionString = configuration.GetConnectionString("DefaultConnection");
         if (string.IsNullOrWhiteSpace("connectionString"))
         {
