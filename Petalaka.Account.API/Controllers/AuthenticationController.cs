@@ -69,7 +69,7 @@ public class AuthenticationController : BaseController
     /// <summary>
     /// Login with google
     /// </summary>
-    [HttpGet("signin-google")]
+    [HttpGet("v1/authentication/google")]
     public IActionResult SignInWithGoogle()
     {
         var redirectUrl = Url.Action(nameof(HandleGoogleLoginCallback));
@@ -81,7 +81,7 @@ public class AuthenticationController : BaseController
     /// Call back function google (redirect to home page frontend after finish)
     /// </summary>
     /// <returns></returns>
-    [HttpGet("google/callback")]
+    [HttpGet("v1/authentication/google/callback")]
     public async Task<IActionResult> HandleGoogleLoginCallback()
     {
         string userAgent = Request.Headers["User-Agent"].ToString();

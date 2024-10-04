@@ -27,7 +27,7 @@ public class RoleController : BaseController
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost]
-    [Route("v1/roles")]
+    [Route("v1/role")]
     [Authorize(Roles="ADMIN")]
     public async Task<ActionResult<BaseResponse>> CreateRole([FromBody] CreateRoleRequestModel request)
     {
