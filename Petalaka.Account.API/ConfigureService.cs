@@ -1,5 +1,9 @@
 ﻿using System.Reflection;
+using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -18,8 +22,21 @@ public static class ConfigureService
         services.ConfigRoute();
         services.AddCors();
         services.AddSwagger();
+        services.AddSess();
         services.AddScoped<ValidateModelStateAttribute>();
 
+    }
+
+    private static void AddSess(this IServiceCollection services)
+    {
+        services.AddDistributedMemoryCache();
+
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromHours(1); // Thời gian hết hạn của session
+            options.Cookie.HttpOnly = true; // Không cho phép JavaScript truy cập cookie
+            options.Cookie.IsEssential = true; // Để sử dụng session cần thiết
+        });
     }
     
     public static void ConfigRoute(this IServiceCollection services)
@@ -73,7 +90,7 @@ public static class ConfigureService
                 {
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader(); 
                 });
         });
     }
@@ -105,6 +122,9 @@ public static class ConfigureService
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
         }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -118,6 +138,19 @@ public static class ConfigureService
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("Key").Value)),
                 ClockSkew = TimeSpan.Zero // No tolerance for token expiration
             };
+        }).AddCookie()
+          .AddGoogle(options =>
+        {
+            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.ClientId = "1079978038687-rbvh8sff4dens7jde9i6ctjitp2516cp.apps.googleusercontent.com";
+            options.ClientSecret = "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";
+            options.Scope.Add("email"); 
+            options.Scope.Add("profile");
+            options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+            options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         });
     }
+
+
+  
 }

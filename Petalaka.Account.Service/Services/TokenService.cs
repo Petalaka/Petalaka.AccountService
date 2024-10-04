@@ -36,7 +36,7 @@ public class TokenService : ITokenService
             new Claim("UserName", user.Id.ToString()),
             new Claim("UserName", user.UserName),
             new Claim("UserEmail", user.Email),
-            new Claim("UserPhone", user.PhoneNumber),
+            new Claim("UserPhone", user.PhoneNumber ?? string.Empty),
             new Claim(ClaimTypes.Role, string.Join(",", userRoles))
         };
 

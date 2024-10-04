@@ -43,9 +43,11 @@ if (app.Environment.IsDevelopment())
 await app.UseInitializeDatabaseAsync();
 
 app.UseRouting();
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors("AllowGoogle");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

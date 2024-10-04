@@ -8,7 +8,7 @@ namespace Petalaka.Account.Contract.Repository.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
 {
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
     public string? Gender { get; set; }
     public string? Address { get; set; }
     public DateTime? DateOfBirth { get; set; }
@@ -16,6 +16,7 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public string? CreatedBy { get; set; }
     public string? LastUpdatedBy { get; set; }
     public string? DeletedBy { get; set; }
+    public string ? GoogleId { get; set; }
     public DateTimeOffset CreatedTime { get; set; }
     public DateTimeOffset LastUpdatedTime { get; set; }
     public DateTimeOffset? DeletedTime { get; set; }
