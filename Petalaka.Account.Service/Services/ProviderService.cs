@@ -46,6 +46,7 @@ public class ProviderService : IProviderService
         string hashedPassword = PasswordHasher.HashPassword(password, salt);
         
         user.Salt = salt;
+        user.EmailConfirmed = true;
         IdentityResult identityResult = await _userManager.CreateAsync(user, hashedPassword);
         if (!identityResult.Succeeded)
         {

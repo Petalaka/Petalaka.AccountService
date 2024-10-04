@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.ProviderRequest;
@@ -24,6 +25,7 @@ public class Providercontroller : BaseController
     /// <returns></returns>
     [HttpPost]
     [Route("v1/provider")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<ActionResult<BaseResponse>> CreateProviderAsync([FromBody] CreateProviderRequest request)
     {
         await _providerService.CreateProviderAsync(request);
