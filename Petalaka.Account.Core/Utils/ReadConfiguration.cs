@@ -15,7 +15,7 @@ public static class ReadConfiguration
     public static IConfiguration ReadBasePathAppSettings()
     {
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.Api")))
+            .SetBasePath(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.API")))
             .AddJsonFile("appsettings.Development.json")
             .Build();
         return configuration;
