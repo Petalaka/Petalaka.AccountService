@@ -217,13 +217,12 @@ public class AuthenticationService : IAuthenService
         await _userManager.CreateAsync(newUser);
         await _userManager.AddToRoleAsync(newUser, roleName);
         await _unitOfWork.SaveChangesAsync();
-        user = await _userManager.FindByEmailAsync(email);
-        token = await _tokenService.GenerateTokens(user, deviceId);
+        token = await _tokenService.GenerateTokens(newUser, deviceId);
         return new LoginResponseModel
         {
             AccessToken = token.accessToken,
             RefreshToken = token.refreshToken,
-            Role = await _userManager.GetRolesAsync(user)
+            Role = await _userManager.GetRolesAsync(newUser)
         };
     }
   
