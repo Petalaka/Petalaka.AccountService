@@ -29,7 +29,9 @@ namespace Petalaka.Account.Repository.Base
             try
             {
                 await _dbContext.Database.MigrateAsync();
+                /*
                 await SeedDataAsync();
+            */
             }
             catch (Exception ex)
             {

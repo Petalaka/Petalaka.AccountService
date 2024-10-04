@@ -11,4 +11,5 @@ public interface IAuthenService
     Task RegisterAccount(RegisterRequestModel request);
     Task<LoginResponseModel> Login(LoginRequestModel request, string deviceId);
     Task<LoginResponseModel> LoginWithGoogle(string googleId, string email, string deviceId);
+    Task Logout(string userId, string deviceId);
 }

@@ -59,4 +59,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IBase
         _dbContext.Entry(entity).State = EntityState.Modified;
         entity.DeletedTime = DateTime.UtcNow;
     }
+    
+    public void DeleteRange(IEnumerable<T> entities)
+    {
+        foreach (var entity in entities)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            entity.DeletedTime = DateTime.UtcNow;
+        }
+    }
+    
+    public void DeletePermanent(T entity) => _dbSet.Remove(entity);
 }

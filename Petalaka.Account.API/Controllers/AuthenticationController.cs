@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http.HttpResults;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Task = System.Threading.Tasks.Task;
+
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
@@ -62,7 +67,7 @@ public class AuthenticationController : BaseController
     }
 
     /// <summary>
-    /// Login By Email and Password
+    /// Login with google
     /// </summary>
     [HttpGet("signin-google")]
     public IActionResult SignInWithGoogle()
@@ -72,6 +77,10 @@ public class AuthenticationController : BaseController
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
+    /// <summary>
+    /// Call back function google (redirect to home page frontend after finish)
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("google/callback")]
     public async Task<IActionResult> HandleGoogleLoginCallback()
     {
@@ -102,4 +111,18 @@ public class AuthenticationController : BaseController
         return Redirect("https://petalaka-staging.nodfeather.win/");
     }
 
+    /// <summary>
+    /// Logout
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("v1/authentication")]
+    [Authorize]
+    public async Task<ActionResult<BaseResponse>> Logout()
+    {
+        string userId = User.Claims.FirstOrDefault(p => p.Type == "UserId").Value;
+        string deviceId = Request.Headers["User-Agent"].ToString();
+        await _authenService.Logout(userId, deviceId);
+        return Ok(new BaseResponse(StatusCodes.Status200OK, "Logout success"));
+    }
 }

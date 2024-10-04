@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Petalaka.Account.Repository.Base;
 
@@ -11,9 +12,11 @@ using Petalaka.Account.Repository.Base;
 namespace Petalaka.Account.Repository.Migrations
 {
     [DbContext(typeof(PetalakaDbContext))]
-    partial class PetalakaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241004065819_Data Seeding")]
+    partial class DataSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,9 +196,6 @@ namespace Petalaka.Account.Repository.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GoogleId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastUpdatedBy")
