@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
+using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.ProviderRequest;
 using Petalaka.Account.Contract.Service.Interface;
 
@@ -13,11 +14,19 @@ public class Providercontroller : BaseController
         _providerService = providerService;
     }
     
+    /// <summary>
+    /// Create Account for Provider
+    /// </summary>
+    /// <remarks>
+    /// Require authentication as admin role to perform this function
+    /// </remarks>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("v1/provider")]
-    public async Task<IActionResult> CreateProviderAsync([FromBody] CreateProviderRequest request)
+    public async Task<ActionResult<BaseResponse>> CreateProviderAsync([FromBody] CreateProviderRequest request)
     {
         await _providerService.CreateProviderAsync(request);
-        return Ok();
+        return Created(String.Empty, new BaseResponse(StatusCodes.Status201Created, "Provider created successfully"));
     }
 }

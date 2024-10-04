@@ -29,10 +29,10 @@ public class RoleController : BaseController
     [HttpPost]
     [Route("v1/roles")]
     [Authorize(Roles="ADMIN")]
-    public async Task<BaseResponse> CreateRole([FromBody] CreateRoleRequestModel request)
+    public async Task<ActionResult<BaseResponse>> CreateRole([FromBody] CreateRoleRequestModel request)
     {
         await _roleService.CreateRoleAsync(request);
-        return new BaseResponse(StatusCodes.Status201Created, "Created successfully");
+        return Created(String.Empty, new BaseResponse(StatusCodes.Status201Created, "Created successfully"));
     }
     
     /// <summary>
@@ -45,14 +45,14 @@ public class RoleController : BaseController
     [HttpGet]
     [Route("v1/roles")]
     [Authorize(Roles = "ADMIN")]
-    public async Task<BaseResponse<IEnumerable<GetRoleResponseModel>>> GetRoles()
+    public async Task<ActionResult<BaseResponse<IEnumerable<GetRoleResponseModel>>>> GetRoles()
     {
         var getRolesResult = await _roleService.GetRolesAsync();
-        return new BaseResponse<IEnumerable<GetRoleResponseModel>>
+        return Ok(new BaseResponse<IEnumerable<GetRoleResponseModel>>
         {
             StatusCode = StatusCodes.Status200OK,
             Data = getRolesResult,
             Message = "Get roles success"
-        };
+        });
     }
 }

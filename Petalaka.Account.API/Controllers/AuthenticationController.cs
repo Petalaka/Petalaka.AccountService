@@ -41,10 +41,10 @@ public class AuthenticationController : BaseController
     /// <returns></returns>
     [HttpPost]
     [Route("v1/registration")]
-    public async Task<BaseResponse> RegisterAccount([FromBody] RegisterRequestModel request)
+    public async Task<ActionResult<BaseResponse>> RegisterAccount([FromBody] RegisterRequestModel request)
     {
         await _authenService.RegisterAccount(request);
-        return new BaseResponse(StatusCodes.Status201Created, "Created successfully");
+        return Created(String.Empty, new BaseResponse(StatusCodes.Status201Created, "Created successfully"));
     }
 
     /// <summary>
@@ -54,16 +54,16 @@ public class AuthenticationController : BaseController
     /// <returns></returns>
     [HttpPost]
     [Route("v1/authentication")]
-    public async Task<BaseResponse<LoginResponseModel>> Login([FromBody] LoginRequestModel request)
+    public async Task<ActionResult<BaseResponse<LoginResponseModel>>> Login([FromBody] LoginRequestModel request)
     {
         string userAgent = Request.Headers["User-Agent"].ToString();
         var loginResult = await _authenService.Login(request, userAgent);
-        return new BaseResponse<LoginResponseModel>
+        return Ok(new BaseResponse<LoginResponseModel>
         {
             StatusCode = StatusCodes.Status200OK,
             Data = loginResult,
             Message = "Login success"
-        };
+        });
     }
 
     /// <summary>
