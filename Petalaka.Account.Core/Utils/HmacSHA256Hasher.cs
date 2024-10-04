@@ -10,12 +10,12 @@ public static class HmacSHA256Hasher
 {
     public static string Hash(string input)
     {
-        var configuration = ReadConfiguration.ReadBasePathAppSettings();
         
-        string? secret = configuration["SecretKeyHmacSHA256:SecretKey"];
+        string? secret = Environment.GetEnvironmentVariable("SecretKeyHmacSHA256:SecretKey");
         if (string.IsNullOrWhiteSpace(secret))
         {
-            secret = Environment.GetEnvironmentVariable("SecretKeyHmacSHA256:SecretKey");
+            var configuration = ReadConfiguration.ReadBasePathAppSettings();
+            secret = configuration["SecretKeyHmacSHA256:SecretKey"];
         }
 
         if (string.IsNullOrEmpty(secret))
