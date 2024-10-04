@@ -2,6 +2,8 @@
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Petalaka.Account.Contract.Repository.Entities;
 using Petalaka.Account.Contract.Repository.Interface;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
@@ -17,7 +19,7 @@ using Petalaka.Service.Shared.RabbitMQ.Events.Interfaces;
 
 namespace Petalaka.Account.Service.Services;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService : IAuthenService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -99,11 +101,12 @@ public class AuthenticationService : IAuthenticationService
             Role = await _userManager.GetRolesAsync(user)
         };
     }
-    
+
+
     public async Task RegisterAccount(RegisterRequestModel request)
     {
         ApplicationUser user = await _unitOfWork.ApplicationUserRepository.FindUndeletedAsync(p => p.Email == request.Email);
-        if(user != null)
+        if(user != null && user.GoogleId == null)
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "User already exists");
         }
@@ -138,9 +141,29 @@ public class AuthenticationService : IAuthenticationService
             Gender = request.Gender,
             DateOfBirth = request.DateOfBirth,
         };
+        if(user!=null && user.GoogleId != null)
+        {
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, newUser.PasswordHash);
+            user.PhoneNumber = newUser.PhoneNumber;
+            user.FullName = newUser.FullName;
+            user.CreatedBy = newUser.CreatedBy;
+            user.LastUpdatedBy = newUser.LastUpdatedBy;
+            user.Salt = newUser.Salt;
+            user.EmailOtp = newUser.EmailOtp;
+            user.EmailOtpExpiration = newUser.EmailOtpExpiration;
+            user.Address = newUser.Address;
+            user.Gender = newUser.Gender;
+            user.DateOfBirth = newUser.DateOfBirth;
+            user.ConcurrencyStamp = newUser.ConcurrencyStamp;
+            await _userManager.UpdateAsync(user);
+        }
+        else
+        {
+            await _userManager.CreateAsync(newUser, hashedPassword);
+            await _userManager.AddToRoleAsync(newUser, roleName);
+        }
         //create user with identity
-        await _userManager.CreateAsync(newUser, hashedPassword);
-        await _userManager.AddToRoleAsync(newUser, roleName);
+     
         /*
         await _unitOfWork.ApplicationUserRepository.InsertAsync(newUser);
         */
@@ -154,4 +177,55 @@ public class AuthenticationService : IAuthenticationService
         };
         await _publishEndpoint.Publish<IEmailVerificationEvent>(message);
     }
+
+
+    public async Task<LoginResponseModel> LoginWithGoogle(string googleId, string email, string deviceId)
+    {
+        ApplicationUser user = await _userManager.FindByEmailAsync(email);
+        TokenResponseModel token;
+        if (user != null)
+        {
+            if(user.GoogleId == null)
+            {
+                user.GoogleId = googleId;
+                await _userManager.UpdateAsync(user);
+            }
+            token = await _tokenService.GenerateTokens(user, deviceId);
+            return new LoginResponseModel
+            {
+                AccessToken = token.accessToken,
+                RefreshToken = token.refreshToken,
+                Role = await _userManager.GetRolesAsync(user)
+            };
+        }
+        var roleName = StringConverterHelper.CapitalizeString("user");
+        //Get role by identity role (_roleManager)
+        var role = await _roleManager.FindByNameAsync(roleName);
+        if (role == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "Role not found");
+        }
+        ApplicationUser newUser = new ApplicationUser
+        {
+            UserName = email,
+            Email = email,
+            GoogleId = googleId,
+            EmailConfirmed = false,
+            CreatedBy = "System",
+            LastUpdatedBy = "System"
+        };
+        await _userManager.CreateAsync(newUser);
+        await _userManager.AddToRoleAsync(newUser, roleName);
+        await _unitOfWork.SaveChangesAsync();
+        user = await _userManager.FindByEmailAsync(email);
+        token = await _tokenService.GenerateTokens(user, deviceId);
+        return new LoginResponseModel
+        {
+            AccessToken = token.accessToken,
+            RefreshToken = token.refreshToken,
+            Role = await _userManager.GetRolesAsync(user)
+        };
+    }
+
+  
 }

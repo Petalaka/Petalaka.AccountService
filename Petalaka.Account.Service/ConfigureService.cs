@@ -13,8 +13,9 @@ public static class ConfigureService
     {
         services.AddDependencyInjectionService(configuration);
         services.AddMasstransitRabbitmq(configuration);
+
     }
-    
+
     public static void AddMasstransitRabbitmq(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMassTransit(config =>
@@ -41,6 +42,8 @@ public static class ConfigureService
             
         });
         services.AddMassTransitHostedService();
+     
+
 
     }
 }

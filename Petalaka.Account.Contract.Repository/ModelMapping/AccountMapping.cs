@@ -8,5 +8,7 @@ public class AccountMapping : Profile
 {
     public AccountMapping()
     {
+        CreateMap<ApplicationUser, ApplicationUser>()
+            .ForMember(dest => dest.Email, opt => opt.Ignore());
     }
 }
