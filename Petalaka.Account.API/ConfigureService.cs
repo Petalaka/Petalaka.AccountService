@@ -148,7 +148,6 @@ public static class ConfigureService
           .AddGoogle(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.CallbackPath = "v1/authentication/google/callback";
             options.ClientId = googleSettings.GetSection("ClientId").Value;
             options.ClientSecret = googleSettings.GetSection("ClientSecret").Value;
             options.Scope.Add("email"); 
