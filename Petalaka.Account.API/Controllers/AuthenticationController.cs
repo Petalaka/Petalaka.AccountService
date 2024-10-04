@@ -69,7 +69,8 @@ public class AuthenticationController : BaseController
     /// <summary>
     /// Login with google
     /// </summary>
-    [HttpGet("v1/authentication/google")]
+    [HttpGet]
+    [Route("v1/authentication/google")]
     public IActionResult SignInWithGoogle()
     {
         var redirectUrl = Url.Action(nameof(HandleGoogleLoginCallback));

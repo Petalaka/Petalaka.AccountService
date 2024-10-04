@@ -37,6 +37,8 @@ builder.Services.AddConfigureServiceService(builder.Configuration);
 builder.Services.AddConfigureServiceAPI(builder.Configuration);
 var app = builder.Build();
 app.UseCors("AllowAll");
+app.UseHttpsRedirection();
+
 if (app.Environment.IsDevelopment())
 {
 }
@@ -55,7 +57,6 @@ app.UseSwaggerUI(c =>
 });
 app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 app.UseMiddleware<ValidateJwtTokenMiddleware>();
-app.UseHttpsRedirection();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor |

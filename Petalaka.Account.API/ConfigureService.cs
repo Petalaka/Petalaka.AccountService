@@ -119,6 +119,7 @@ public static class ConfigureService
     {
         //var jwtSettings = ReadConfiguration.ReadAppSettings().GetSection("JwtSettings");
         var jwtSettings = configuration.GetSection("JwtSettings");
+        var googleSettings = configuration.GetSection("GoogleSettings");
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -147,8 +148,8 @@ public static class ConfigureService
           .AddGoogle(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.ClientId = "1079978038687-rbvh8sff4dens7jde9i6ctjitp2516cp.apps.googleusercontent.com";
-            options.ClientSecret = "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";
+            options.ClientId = googleSettings.GetSection("ClientId").Value;
+            options.ClientSecret = googleSettings.GetSection("ClientSecret").Value;
             options.Scope.Add("email"); 
             options.Scope.Add("profile");
             options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
