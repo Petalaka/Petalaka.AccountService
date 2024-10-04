@@ -52,7 +52,6 @@ public class TokenService : ITokenService
             new Claim("UserId", user.Id.ToString()),
             new Claim("UserName", user.UserName),
             new Claim("UserEmail", user.Email),
-            new Claim("UserPhone", user.PhoneNumber),
             new Claim("TokenHash", hashJwtToken),
             new Claim(ClaimTypes.Role, string.Join(",", userRoles))
         };

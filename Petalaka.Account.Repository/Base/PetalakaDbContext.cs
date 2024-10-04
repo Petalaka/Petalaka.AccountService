@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Petalaka.Account.Contract.Repository.Entities;
+using Petalaka.Account.Repository.DataSeeding;
 
 namespace Petalaka.Account.Repository.Base;
 
@@ -23,6 +24,9 @@ public class PetalakaDbContext : IdentityDbContext<ApplicationUser, ApplicationR
                 entityType.SetTableName(tableName.Substring(6));
             }
         }
+        modelBuilder.Entity<ApplicationUser>().HasData(AccountDataSeeding.DefaultUsers);
+        modelBuilder.Entity<ApplicationRole>().HasData(RoleDataSeeding.DefaultRoles);
+        modelBuilder.Entity<ApplicationUserRoles>().HasData(UserRoleDataSeeding.DefaultUserRoles);
     }
     
 }

@@ -154,4 +154,22 @@ public class AuthenticationService : IAuthenticationService
         };
         await _publishEndpoint.Publish<IEmailVerificationEvent>(message);
     }
+    
+    public async Task Logout(string userId, string deviceId)
+    {
+        ApplicationUser user = await _userManager.FindByIdAsync(userId);
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
+        }
+        var userToken = await _unitOfWork.ApplicationUserTokenRepository.GetUserAsync(p =>
+            p.UserId.ToString() == StringConverterHelper.CapitalizeString(userId) &&
+            p.LoginProvider == deviceId);
+        if(userToken == null)
+        {
+            throw new CoreException(StatusCodes.Status400BadRequest, "User token not found");
+        }
+        _unitOfWork.ApplicationUserTokenRepository.DeletePermanent(userToken);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

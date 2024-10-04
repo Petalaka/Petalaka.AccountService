@@ -10,4 +10,5 @@ public interface IAuthenticationService
 {
     Task RegisterAccount(RegisterRequestModel request);
     Task<LoginResponseModel> Login(LoginRequestModel request, string deviceId);
+    Task Logout(string userId, string deviceId);
 }

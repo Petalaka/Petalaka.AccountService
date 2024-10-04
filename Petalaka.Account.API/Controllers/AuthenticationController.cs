@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
@@ -54,4 +55,18 @@ public class AuthenticationController : BaseController
         };
     }
 
+    /// <summary>
+    /// Logout
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("v1/authentication")]
+    [Authorize]
+    public async Task<BaseResponse> Logout()
+    {
+        string userId = User.Claims.FirstOrDefault(p => p.Type == "UserId").Value;
+        string deviceId = Request.Headers["User-Agent"].ToString();
+        await _authenService.Logout(userId, deviceId);
+        return new BaseResponse(StatusCodes.Status200OK, "Logout success");
+    }
 }
