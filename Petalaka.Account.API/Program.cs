@@ -36,7 +36,7 @@ builder.Services.AddConfigureServiceRepository(builder.Configuration);
 builder.Services.AddConfigureServiceService(builder.Configuration);
 builder.Services.AddConfigureServiceAPI(builder.Configuration);
 var app = builder.Build();
-app.UseCors("AllowAll");
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
 if (app.Environment.IsProduction())

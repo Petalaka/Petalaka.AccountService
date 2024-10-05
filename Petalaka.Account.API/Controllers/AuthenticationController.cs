@@ -101,6 +101,7 @@ public class AuthenticationController : BaseController
             SameSite = SameSiteMode.Strict, // Chỉ gửi cookie cùng site
             Expires = DateTimeOffset.UtcNow.AddHours(1) // Thời hạn hết hạn
         });
+        // Console.WriteLine($"AccessToken: {loginResult.AccessToken}");
 
         HttpContext.Response.Cookies.Append("RefreshToken", loginResult.RefreshToken, new CookieOptions
         {
