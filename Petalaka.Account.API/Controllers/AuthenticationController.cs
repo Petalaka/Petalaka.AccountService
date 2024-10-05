@@ -74,7 +74,7 @@ public class AuthenticationController : BaseController
     public IActionResult SignInWithGoogle()
     {
         var redirectUrl = Url.Action(nameof(HandleGoogleLoginCallback));
-        var properties = new AuthenticationProperties { RedirectUri = "https://api-gateway-staging.nodfeather.win/api/authentication/v1/authentication/google/callback" };
+        var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
