@@ -10,10 +10,10 @@ using Petalaka.Account.Contract.Service.Interface;
 
 namespace Petalaka.Account.API.Controllers;
 
-public class AccountController : BaseController
+public class AccountsController : BaseController
 {
     private readonly IAccountService _accountService;
-    public AccountController(IAccountService accountService)
+    public AccountsController(IAccountService accountService)
     {
         _accountService = accountService;
     }

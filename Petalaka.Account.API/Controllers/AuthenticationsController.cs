@@ -19,12 +19,12 @@ using Azure.Core;
 
 namespace Petalaka.Account.API.Controllers;
 
-public class AuthenticationController : BaseController
+public class AuthenticationsController : BaseController
 {
     private readonly  IAuthenService _authenService;
-    private readonly ILogger<AuthenticationController> _logger;
-    public AuthenticationController(
-        ILogger<AuthenticationController> logger,
+    private readonly ILogger<AuthenticationsController> _logger;
+    public AuthenticationsController(
+        ILogger<AuthenticationsController> logger,
             IAuthenService authenService
         )
     {

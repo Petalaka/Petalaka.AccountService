@@ -10,10 +10,10 @@ using Petalaka.Account.Contract.Service.Interface;
 
 namespace Petalaka.Account.API.Controllers;
 
-public class RoleController : BaseController
+public class RolesController : BaseController
 {
     private readonly IRoleService _roleService;
-    public RoleController(IRoleService roleService)
+    public RolesController(IRoleService roleService)
     {
         _roleService = roleService;
     }

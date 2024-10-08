@@ -7,10 +7,10 @@ using Petalaka.Account.Contract.Service.Interface;
 
 namespace Petalaka.Account.API.Controllers;
 
-public class Providercontroller : BaseController
+public class Providerscontroller : BaseController
 {
     private readonly IProviderService _providerService;
-    public Providercontroller(IProviderService providerService)
+    public Providerscontroller(IProviderService providerService)
     {
         _providerService = providerService;
     }
