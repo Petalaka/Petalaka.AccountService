@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Petalaka.Account.API.Base;
@@ -87,12 +88,13 @@ public static class ConfigureService
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowAll",
+            options.AddPolicy("AllowSpecificOrigin",
                 builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("https://petalaka-staging.nodfeather.win/")
                         .AllowAnyMethod()
-                        .AllowAnyHeader(); 
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
         });
     }
@@ -154,6 +156,52 @@ public static class ConfigureService
             options.Scope.Add("profile");
             options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
             options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            options.Events = new OAuthEvents
+            {
+                /*      OnCreatingTicket = ctx =>
+                      {
+                          // Lấy Access Token từ Google
+                          var accessToken = ctx.AccessToken;
+
+                          // Lưu Access Token vào Claims
+                          var claimsIdentity = (ClaimsIdentity)ctx.Principal.Identity;
+                          claimsIdentity.AddClaim(new Claim("AccessToken", accessToken));
+
+                          // Bạn cũng có thể lưu các thông tin khác từ Google nếu cần
+                          // Ví dụ: ctx.Principal.FindFirst(ClaimTypes.Email)?.Value;
+                          Console.WriteLine($"AccessToken: {accessToken}");
+                          return Task.CompletedTask;
+                      },
+                      OnTicketReceived = ctx =>
+                      {
+                          var accessToken = ctx.Principal.FindFirst("AccessToken")?.Value;
+
+                          if (accessToken != null)
+                          {
+                              // Lưu AccessToken vào cookie
+                              ctx.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions
+                              {
+                                  HttpOnly = true, // Đảm bảo cookie không thể truy cập bằng JavaScript
+                                  Secure = false,   // Chỉ gửi cookie qua HTTPS
+                                  SameSite = SameSiteMode.Strict, // Chỉ gửi cookie cùng site
+                                  Expires = DateTimeOffset.UtcNow.AddHours(1) // Thời hạn hết hạn
+                              });
+                          }
+                          // Khi nhận vé thành công, lưu thông tin vào cookie và chuyển hướng về trang chủ
+                          ctx.Response.Redirect("https://petalaka-staging.nodfeather.win/"); // Chuyển hướng tới trang chủ
+                          ctx.HandleResponse(); // Ngăn không xử lý tiếp tục sau đó
+                          return Task.CompletedTask;
+                      },
+      */
+                OnRemoteFailure = ctx =>
+                {
+                    ctx.Response.Redirect("https://petalaka-staging.nodfeather.win/");
+                    ctx.HandleResponse(); // Ngăn chặn xử lý thêm lỗi
+                    return Task.CompletedTask;
+                }
+            };
+
+
         });
     }
 }
