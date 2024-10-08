@@ -5,6 +5,9 @@ using Petalaka.Account.Contract.Repository.Interface;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.UserRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.UserResponse;
+using Petalaka.Account.Contract.Repository.QueryOptions.FilterOptions.UserFilters;
+using Petalaka.Account.Contract.Repository.QueryOptions.RequestOptions;
+using Petalaka.Account.Contract.Repository.QueryOptions.SortOptions.UserSorts;
 using Petalaka.Account.Contract.Service.Interface;
 using Petalaka.Account.Core.ExceptionCustom;
 using Petalaka.Account.Core.Utils;
@@ -43,5 +46,10 @@ public class UserService : IUserService
         _mapper.Map(request, user);
         _unitOfWork.GetRepository<ApplicationUser>().Update(user);
         await _unitOfWork.SaveChangesAsync();
+    }
+    
+    public async Task GetUsers(RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+    {
+        var users = _unitOfWork.GetRepository<ApplicationUser>().AsQueryable();
     }
 }

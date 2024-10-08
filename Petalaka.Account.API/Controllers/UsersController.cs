@@ -5,14 +5,17 @@ using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.UserRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.UserResponse;
+using Petalaka.Account.Contract.Repository.QueryOptions.FilterOptions.UserFilters;
+using Petalaka.Account.Contract.Repository.QueryOptions.RequestOptions;
+using Petalaka.Account.Contract.Repository.QueryOptions.SortOptions.UserSorts;
 using Petalaka.Account.Contract.Service.Interface;
 
 namespace Petalaka.Account.API.Controllers;
 
-public class UserController : BaseController
+public class UsersController : BaseController
 {
     private readonly IUserService _userService;
-    public UserController(IUserService userService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }
@@ -34,5 +37,12 @@ public class UserController : BaseController
     {
         await _userService.UpdateMyProfile(request);
         return Accepted(new BaseResponse(StatusCodes.Status202Accepted, "Update profile successfully"));
+    }
+    
+    [HttpGet]
+    [Route("v1/users")]
+    public async Task<ActionResult<BaseResponse>> GetUsers([FromQuery] RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+    {
+        return Ok(new BaseResponse(StatusCodes.Status200OK, "Get users successfully"));
     }
 }
