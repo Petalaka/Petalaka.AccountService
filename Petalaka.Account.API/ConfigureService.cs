@@ -91,7 +91,8 @@ public static class ConfigureService
             options.AddPolicy("AllowSpecificOrigin",
                 builder =>
                 {
-                    builder.WithOrigins("https://petalaka-staging.nodfeather.win/")
+                    builder.WithOrigins("https://petalaka-staging.nodfeather.win/", 
+                            "https://api-gateway-staging.nodfeather.win/")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
