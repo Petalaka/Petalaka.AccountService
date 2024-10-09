@@ -244,4 +244,26 @@ public class AuthenticationService : IAuthenService
         _unitOfWork.ApplicationUserTokenRepository.DeletePermanent(userToken);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task<bool> ValidateToken(ValidateTokenRequestModel request)
+    {
+        ApplicationUser user = await _userManager.FindByIdAsync(request.UserId);
+        if(user == null)
+        {
+            throw new CoreException(StatusCodes.Status401Unauthorized, "User not found");
+        }
+        var userToken = await _unitOfWork.ApplicationUserTokenRepository.GetUserAsync(p =>
+            p.UserId.ToString() == request.UserId &&
+            p.LoginProvider == request.DevideId);
+        if (userToken == null)
+        {
+            throw new CoreException(StatusCodes.Status401Unauthorized, "User token not found");
+        }
+        if (String.CompareOrdinal(userToken.ExpiryTime, TimeStampHelper.GenerateUnixTimeStamp()) < 0)
+        {
+            throw new CoreException(StatusCodes.Status401Unauthorized, "Token expired");
+        }
+        string inputString = $"{request.UserId}{request.DevideId}{userToken.Value}";
+        return _tokenService.ValidTokenHash(request.TokenHashed, inputString);
+    }
 }

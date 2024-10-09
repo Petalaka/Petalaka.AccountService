@@ -127,4 +127,13 @@ public class AuthenticationsController : BaseController
         await _authenService.Logout(userId, deviceId);
         return Ok(new BaseResponse(StatusCodes.Status200OK, "Logout success"));
     }
+    
+    [HttpPost]
+    [Route("v1/token/validation")]
+    [Authorize]
+    public async Task<ActionResult<BaseResponse>> ValidateToken([FromBody] ValidateTokenRequestModel request)
+    {
+        var result = await _authenService.ValidateToken(request);
+        return Ok(new BaseResponse(StatusCodes.Status200OK, "Validated", result));
+    }
 }

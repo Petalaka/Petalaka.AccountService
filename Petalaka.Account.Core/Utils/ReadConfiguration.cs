@@ -14,10 +14,37 @@ public static class ReadConfiguration
     }
     public static IConfiguration ReadBasePathAppSettings()
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.API")))
-            .AddJsonFile("appsettings.Development.json")
-            .Build();
+        IConfiguration configuration = null;
+        var pathDocker = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../app"));
+        var pathLocal = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Petalaka.Account.API"));
+
+        try
+        {
+            configuration = new ConfigurationBuilder()
+                .SetBasePath(pathDocker)
+                .AddJsonFile("appsettings.Development.json")
+                .Build();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        if (configuration == null)
+        {
+            try
+            {
+                configuration = new ConfigurationBuilder()
+                    .SetBasePath(pathLocal)
+                    .AddJsonFile("appsettings.Development.json")
+                    .Build();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new FileNotFoundException("Unable to load configuration from any path.");
+            }
+        }
         return configuration;
     }
 }
