@@ -93,8 +93,7 @@ public static class ConfigureService
                 {
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
+                        .AllowAnyHeader();
                 });
         });
     }
