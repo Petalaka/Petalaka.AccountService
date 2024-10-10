@@ -28,7 +28,6 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public string? PhoneOtpExpiration { get; set; }
     
     public Guid? ProviderId { get; set; }
-    [ForeignKey("ProviderId")]
     public virtual Provider? Provider { get; set; }
     public ApplicationUser()
     {
