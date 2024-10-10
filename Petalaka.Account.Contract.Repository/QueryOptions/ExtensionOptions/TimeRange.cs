@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using Petalaka.Account.Core.ExceptionCustom;
 
 namespace Petalaka.Account.Contract.Repository.QueryOptions.ExtensionOptions;
 
-public class TimeRange
+public class TimeRange : IValidatableObject
 {
-    private DateTime? _from;
+    /*private DateTime? _from;
     private DateTime? _to;
 
     public DateTime? From
@@ -32,6 +33,14 @@ public class TimeRange
             }
             _to = value;
         }
+    }*/
+    public DateTime From { get; set; }
+    public DateTime To { get; set; }
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (From > To)
+        {
+            yield return new ValidationResult("'From' date cannot be greater than 'To' date.");
+        }
     }
-
 }

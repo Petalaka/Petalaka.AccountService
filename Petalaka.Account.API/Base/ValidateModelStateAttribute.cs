@@ -8,11 +8,19 @@ public class ValidateModelStateAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        // Check ModelState
-        if (!context.ModelState.IsValid)
+        try
         {
-            throw new CoreException(StatusCodes.Status400BadRequest, context.ModelState.ToString());
+            if (!context.ModelState.IsValid)
+            {
+                throw new CoreException(StatusCodes.Status400BadRequest, context.ModelState.ToString());
+            }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
 
         // Call the base class method
         base.OnActionExecuting(context);

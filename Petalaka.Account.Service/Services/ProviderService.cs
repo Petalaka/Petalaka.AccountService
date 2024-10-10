@@ -66,4 +66,5 @@ public class ProviderService : IProviderService
         };
         await _publishEndpoint.Publish(message);
     }
+    
 }

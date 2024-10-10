@@ -70,4 +70,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IBase
     }
     
     public void DeletePermanent(T entity) => _dbSet.Remove(entity);
+    
+    public async Task<PaginationResponse<T>> GetPagination(IQueryable<T> queryable, int pageIndex, int pageSize)
+    {
+        int totalRecords = await queryable.CountAsync();
+        queryable = queryable.Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .AsNoTracking()
+            .AsQueryable();
+        var data = await queryable.ToListAsync();
+        var currentPageRecords = await queryable.CountAsync();
+        return new PaginationResponse<T>(data, pageIndex, pageSize, totalRecords, currentPageRecords);
+    }
 }

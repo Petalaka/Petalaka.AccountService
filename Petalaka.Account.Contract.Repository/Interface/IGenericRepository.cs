@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Petalaka.Account.Contract.Repository.Base;
 
 namespace Petalaka.Account.Contract.Repository.Interface;
 
@@ -22,4 +23,5 @@ public interface IGenericRepository<T> where T : class
     void Delete(T entity);
     void DeleteRange(IEnumerable<T> entities);
     void DeletePermanent(T entity);
+    Task<PaginationResponse<T>> GetPagination(IQueryable<T> queryable, int pageIndex, int pageSize);
 }

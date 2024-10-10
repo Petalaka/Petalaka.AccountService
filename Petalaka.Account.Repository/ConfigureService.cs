@@ -42,7 +42,7 @@ public static class ConfigureService
                                  throw new InvalidOperationException(
                                      "Connection string not found in appsettings.json"), 
                                      options => options.EnableRetryOnFailure()
-                                     );
+                                     ).UseLazyLoadingProxies();
         });
     }
 

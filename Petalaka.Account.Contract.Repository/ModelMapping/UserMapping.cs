@@ -12,5 +12,6 @@ public class UserMapping : Profile
     {
         CreateMap<ApplicationUser, GetMyProfileResponse>().ReverseMap();
         CreateMap<UpdateMyProfileRequest, ApplicationUser>();
+        CreateMap<ApplicationUser, GetAllUserResponse>().ReverseMap();
     }
 }

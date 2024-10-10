@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.Base.Interface;
 using Petalaka.Account.Core.ExceptionCustom;
@@ -16,7 +17,7 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public string? CreatedBy { get; set; }
     public string? LastUpdatedBy { get; set; }
     public string? DeletedBy { get; set; }
-    public string ? GoogleId { get; set; }
+    public string? GoogleId { get; set; }
     public DateTimeOffset CreatedTime { get; set; }
     public DateTimeOffset LastUpdatedTime { get; set; }
     public DateTimeOffset? DeletedTime { get; set; }
@@ -26,6 +27,9 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public string? PhoneOtp { get; set; }
     public string? PhoneOtpExpiration { get; set; }
     
+    public Guid? ProviderId { get; set; }
+    [ForeignKey("ProviderId")]
+    public virtual Provider? Provider { get; set; }
     public ApplicationUser()
     {
         CreatedTime = CoreHelper.SystemTimeNow;
