@@ -12,8 +12,8 @@ using Petalaka.Account.Repository.Base;
 namespace Petalaka.Account.Repository.Migrations
 {
     [DbContext(typeof(PetalakaDbContext))]
-    [Migration("20241010044018_Add provider reference in user")]
-    partial class Addproviderreferenceinuser
+    [Migration("20241010135634_add provider reference in user")]
+    partial class addproviderreferenceinuser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,9 +79,9 @@ namespace Petalaka.Account.Repository.Migrations
                             Id = new Guid("b74c0a77-a451-4f16-de61-08dcdfcdb851"),
                             ConcurrencyStamp = "A6WZZDMSOY6XEPH4VJRSRVTAXICX34US",
                             CreatedBy = "System",
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8727), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7619), new TimeSpan(0, 7, 0, 0, 0)),
                             LastUpdatedBy = "System",
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8728), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7619), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         },
@@ -90,9 +90,9 @@ namespace Petalaka.Account.Repository.Migrations
                             Id = new Guid("89fca251-f021-425b-de62-08dcdfcdb851"),
                             ConcurrencyStamp = "A6WZZDMSOY6XEPH4VJRSRVTAXICX34US",
                             CreatedBy = "System",
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8733), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7624), new TimeSpan(0, 7, 0, 0, 0)),
                             LastUpdatedBy = "System",
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8734), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7625), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "USER",
                             NormalizedName = "USER"
                         },
@@ -101,9 +101,9 @@ namespace Petalaka.Account.Repository.Migrations
                             Id = new Guid("d14e804f-1132-4923-de63-08dcdfcdb851"),
                             ConcurrencyStamp = "A6WZZDMSOY6XEPH4VJRSRVTAXICX34US",
                             CreatedBy = "System",
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8739), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7629), new TimeSpan(0, 7, 0, 0, 0)),
                             LastUpdatedBy = "System",
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8740), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7630), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "PROVIDER",
                             NormalizedName = "PROVIDER"
                         });
@@ -265,8 +265,6 @@ namespace Petalaka.Account.Repository.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("ProviderId");
-
                     b.ToTable("Users", (string)null);
 
                     b.HasData(
@@ -274,12 +272,12 @@ namespace Petalaka.Account.Repository.Migrations
                         {
                             Id = new Guid("094de1df-60b1-4a58-878c-dc6909f7350b"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f900d0b-96bf-4d61-a846-6d45074cd23b",
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8588), new TimeSpan(0, 7, 0, 0, 0)),
+                            ConcurrencyStamp = "2c1485d1-15d3-4d16-91b2-0f2433386d77",
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7500), new TimeSpan(0, 7, 0, 0, 0)),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FullName = "admin",
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8588), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7500), new TimeSpan(0, 7, 0, 0, 0)),
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "admin",
@@ -294,12 +292,12 @@ namespace Petalaka.Account.Repository.Migrations
                         {
                             Id = new Guid("a3ee2988-67b2-4017-b63b-a0dae4708359"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c935b16a-63ce-4ab3-bf0d-c07e353101c7",
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8656), new TimeSpan(0, 7, 0, 0, 0)),
+                            ConcurrencyStamp = "16a3cdb8-bf2b-4ecd-bfce-7bdc94b19700",
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7562), new TimeSpan(0, 7, 0, 0, 0)),
                             Email = "provider@gmail.com",
                             EmailConfirmed = true,
                             FullName = "provider",
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8656), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7562), new TimeSpan(0, 7, 0, 0, 0)),
                             LockoutEnabled = false,
                             NormalizedEmail = "PROVIDER@GMAIL.COM",
                             NormalizedUserName = "provider",
@@ -430,15 +428,15 @@ namespace Petalaka.Account.Repository.Migrations
                         {
                             UserId = new Guid("094de1df-60b1-4a58-878c-dc6909f7350b"),
                             RoleId = new Guid("b74c0a77-a451-4f16-de61-08dcdfcdb851"),
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8786), new TimeSpan(0, 7, 0, 0, 0)),
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8786), new TimeSpan(0, 7, 0, 0, 0))
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7669), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7669), new TimeSpan(0, 7, 0, 0, 0))
                         },
                         new
                         {
                             UserId = new Guid("a3ee2988-67b2-4017-b63b-a0dae4708359"),
                             RoleId = new Guid("d14e804f-1132-4923-de63-08dcdfcdb851"),
-                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8798), new TimeSpan(0, 7, 0, 0, 0)),
-                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 11, 40, 18, 381, DateTimeKind.Unspecified).AddTicks(8798), new TimeSpan(0, 7, 0, 0, 0))
+                            CreatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7676), new TimeSpan(0, 7, 0, 0, 0)),
+                            LastUpdatedTime = new DateTimeOffset(new DateTime(2024, 10, 10, 20, 56, 34, 175, DateTimeKind.Unspecified).AddTicks(7676), new TimeSpan(0, 7, 0, 0, 0))
                         });
                 });
 
@@ -517,7 +515,8 @@ namespace Petalaka.Account.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Providers");
                 });
@@ -529,15 +528,6 @@ namespace Petalaka.Account.Repository.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Petalaka.Account.Contract.Repository.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Petalaka.Account.Contract.Repository.Entities.Provider", "Provider")
-                        .WithMany()
-                        .HasForeignKey("ProviderId");
-
-                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("Petalaka.Account.Contract.Repository.Entities.ApplicationUserClaim", b =>
@@ -585,12 +575,17 @@ namespace Petalaka.Account.Repository.Migrations
             modelBuilder.Entity("Petalaka.Account.Contract.Repository.Entities.Provider", b =>
                 {
                     b.HasOne("Petalaka.Account.Contract.Repository.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Provider")
+                        .HasForeignKey("Petalaka.Account.Contract.Repository.Entities.Provider", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Petalaka.Account.Contract.Repository.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Provider");
                 });
 #pragma warning restore 612, 618
         }
