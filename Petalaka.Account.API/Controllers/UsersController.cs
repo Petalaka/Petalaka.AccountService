@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Petalaka.Account.API.Base;
 using Petalaka.Account.Contract.Repository.Base;
+using Petalaka.Account.Contract.Repository.Entities;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels.UserRequest;
 using Petalaka.Account.Contract.Repository.ModelViews.ResponseModels.UserResponse;
@@ -41,8 +42,9 @@ public class UsersController : BaseController
     
     [HttpGet]
     [Route("v1/users")]
-    public async Task<ActionResult<BaseResponse>> GetUsers([FromQuery] RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+    public async Task<ActionResult<BaseResponse<PaginationResponse<ApplicationUser>>>> GetUsers([FromQuery] RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
     {
-        return Ok(new BaseResponse(StatusCodes.Status200OK, "Get users successfully"));
+        var result = await _userService.GetUsers(request);
+        return Ok(new BaseResponse(StatusCodes.Status200OK, "Get users successfully", result));
     }
 }

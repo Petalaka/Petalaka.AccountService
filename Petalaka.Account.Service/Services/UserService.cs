@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Petalaka.Account.Contract.Repository.Base;
 using Petalaka.Account.Contract.Repository.Entities;
 using Petalaka.Account.Contract.Repository.Interface;
 using Petalaka.Account.Contract.Repository.ModelViews.RequestModels;
@@ -48,8 +50,44 @@ public class UserService : IUserService
         await _unitOfWork.SaveChangesAsync();
     }
     
-    public async Task GetUsers(RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+    public async Task<PaginationResponse<GetAllUserResponse>> GetUsers(RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
     {
-        var users = _unitOfWork.GetRepository<ApplicationUser>().AsQueryable();
+        var userQuery = _unitOfWork.GetRepository<ApplicationUser>().AsQueryable();
+        
+        if (request.FilterOptions != null)
+        {
+            if (!String.IsNullOrWhiteSpace(request.FilterOptions.Name))
+            {
+                userQuery = userQuery.Where(p => p.FullName.Contains(request.FilterOptions.Name));
+            }
+            if (!String.IsNullOrWhiteSpace(request.FilterOptions.Email))
+            {
+                userQuery = userQuery.Where(p => p.Email.Contains(request.FilterOptions.Email));
+            }
+            if (request.FilterOptions.CreateTimeRange != null)
+            {
+                userQuery = userQuery.Where(p => p.CreatedTime >= request.FilterOptions.CreateTimeRange.From &&
+                                                 p.CreatedTime <= request.FilterOptions.CreateTimeRange.To);
+            }
+        }
+  
+        switch (request.SortOptions)
+        {
+            case GetAllUserSortoptions.CreatedTimeAscending:
+                userQuery = userQuery.OrderBy(p => p.CreatedTime);
+                break;
+            case GetAllUserSortoptions.CreatedTimeDescending:
+                userQuery = userQuery.OrderByDescending(p => p.CreatedTime);
+                break;
+            default:
+                userQuery = userQuery.OrderByDescending(p => p.CreatedTime);
+                break;
+        }
+
+        var queryPaging = await _unitOfWork.GetRepository<ApplicationUser>()
+            .GetPagination(userQuery, request.PageNumber, request.PageSize);
+        
+        var users = _mapper.Map<IList<GetAllUserResponse>>(queryPaging.Data);
+        return new PaginationResponse<GetAllUserResponse>(users, queryPaging.PageNumber, queryPaging.PageSize, queryPaging.TotalRecords, queryPaging.CurrentPageRecords);
     }
 }

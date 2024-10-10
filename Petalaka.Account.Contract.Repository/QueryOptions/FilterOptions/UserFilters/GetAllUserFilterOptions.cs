@@ -4,7 +4,7 @@ namespace Petalaka.Account.Contract.Repository.QueryOptions.FilterOptions.UserFi
 
 public class GetAllUserFilterOptions
 {
-   public string Name { get; set; }
-   public string Email { get; set; }
-   public TimeRange CreateTimeRange { get; set; }
+   public string? Name { get; set; }
+   public string? Email { get; set; }
+   public TimeRange? CreateTimeRange { get; set; }
 }

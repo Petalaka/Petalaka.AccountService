@@ -28,5 +28,10 @@ public class PetalakaDbContext : IdentityDbContext<ApplicationUser, ApplicationR
         modelBuilder.Entity<ApplicationRole>().HasData(RoleDataSeeding.DefaultRoles);
         modelBuilder.Entity<ApplicationUserRoles>().HasData(UserRoleDataSeeding.DefaultUserRoles);
     }
-    
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+        base.OnConfiguring(optionsBuilder);
+    }
 }

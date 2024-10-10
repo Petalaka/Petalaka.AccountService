@@ -1,7 +1,7 @@
 ﻿namespace Petalaka.Account.Contract.Repository.QueryOptions.SortOptions.UserSorts;
 
-public class GetAllUserSortoptions
+public enum GetAllUserSortoptions
 {
-    public bool CreatedTimeAscending { get; set; } = false;
-    public bool CreatedTimeDescending { get; set; } = false;
+    CreatedTimeAscending = 1,
+    CreatedTimeDescending = 2,
 }
