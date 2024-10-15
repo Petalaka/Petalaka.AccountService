@@ -69,7 +69,7 @@ public class UsersController : BaseController
     [HttpGet]
     [Route("v1/users")]
     [Authorize(Roles = "ADMIN")]
-    public async Task<ActionResult<BaseResponse<PaginationResponse<GetAllUserResponse>>>> GetUsers([FromQuery] RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+    public async Task<ActionResult<BaseResponsePagination<GetAllUserResponse>>> GetUsers([FromQuery] RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
     {
         var result = await _userService.GetUsers(request);
         var baseResponsePagination = _mapper.Map<BaseResponsePagination<GetAllUserResponse>>(result);
