@@ -21,5 +21,5 @@ public class CreateProviderRequest
     public string? ContactEmail { get; set; }
     [Phone(ErrorMessage = "Invalid phone number")]
     [DefaultValue("0909123456")]
-    public string? ContactPhoneNumber { get; set; }
+    public string? ContactPhone { get; set; }
 }
