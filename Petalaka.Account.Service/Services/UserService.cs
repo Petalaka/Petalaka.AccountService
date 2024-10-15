@@ -20,12 +20,13 @@ public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+
     public UserService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    
+
     public async Task<GetMyProfileResponse> GetMyProfile(string userId)
     {
         var user = await _unitOfWork.GetRepository<ApplicationUser>()
@@ -34,7 +35,8 @@ public class UserService : IUserService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
         }
-        return _mapper.Map<GetMyProfileResponse>(user); 
+
+        return _mapper.Map<GetMyProfileResponse>(user);
     }
 
     public async Task UpdateMyProfile(UpdateMyProfileRequest request)
@@ -45,14 +47,31 @@ public class UserService : IUserService
         {
             throw new CoreException(StatusCodes.Status400BadRequest, "User not found");
         }
+
         _mapper.Map(request, user);
         _unitOfWork.GetRepository<ApplicationUser>().Update(user);
         await _unitOfWork.SaveChangesAsync();
     }
-    
-    public async Task<PaginationResponse<GetAllUserResponse>> GetUsers(RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
+
+    public async Task<PaginationResponse<GetAllUserResponse>> GetUsers(
+        RequestOptionsBase<GetAllUserFilterOptions, GetAllUserSortoptions> request)
     {
         var userQuery = _unitOfWork.GetRepository<ApplicationUser>().AsQueryable();
+        if (request.IsDelete == true)
+        {
+            userQuery = userQuery.Where(p => p.DeletedTime != null);
+        }
+
+        // Join with the user roles and roles
+        var roleName = "USER";
+        var userRolesQuery = _unitOfWork.GetRepository<ApplicationUserRoles>().AsQueryable();
+        var rolesQuery = _unitOfWork.GetRepository<ApplicationRole>().AsQueryable();
+
+        userQuery = from user in userQuery
+            join userRole in userRolesQuery on user.Id equals userRole.UserId
+            join role in rolesQuery on userRole.RoleId equals role.Id
+            where role.Name == roleName
+            select user;
         
         if (request.FilterOptions != null)
         {
@@ -60,17 +79,19 @@ public class UserService : IUserService
             {
                 userQuery = userQuery.Where(p => p.FullName.Contains(request.FilterOptions.Name));
             }
+
             if (!String.IsNullOrWhiteSpace(request.FilterOptions.Email))
             {
                 userQuery = userQuery.Where(p => p.Email.Contains(request.FilterOptions.Email));
             }
+
             if (request.FilterOptions.CreateTimeRange != null)
             {
                 userQuery = userQuery.Where(p => p.CreatedTime >= request.FilterOptions.CreateTimeRange.From &&
                                                  p.CreatedTime <= request.FilterOptions.CreateTimeRange.To);
             }
         }
-  
+
         switch (request.SortOptions)
         {
             case GetAllUserSortoptions.CreatedTimeAscending:
@@ -86,8 +107,9 @@ public class UserService : IUserService
 
         var queryPaging = await _unitOfWork.GetRepository<ApplicationUser>()
             .GetPagination(userQuery, request.PageNumber, request.PageSize);
-        
+
         var users = _mapper.Map<IList<GetAllUserResponse>>(queryPaging.Data);
-        return new PaginationResponse<GetAllUserResponse>(users, queryPaging.PageNumber, queryPaging.PageSize, queryPaging.TotalRecords, queryPaging.CurrentPageRecords);
+        return new PaginationResponse<GetAllUserResponse>(users, queryPaging.PageNumber, queryPaging.PageSize,
+            queryPaging.TotalRecords, queryPaging.CurrentPageRecords);
     }
 }
